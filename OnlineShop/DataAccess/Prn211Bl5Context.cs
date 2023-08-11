@@ -15,6 +15,8 @@ public partial class Prn211Bl5Context : DbContext
     {
     }
 
+    public virtual DbSet<Cart> Carts { get; set; }
+
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
@@ -33,6 +35,25 @@ public partial class Prn211Bl5Context : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Cart>(entity =>
+        {
+            entity.ToTable("Cart");
+
+            entity.Property(e => e.CartId).HasColumnName("Cart_Id");
+            entity.Property(e => e.ProductId).HasColumnName("Product_Id");
+            entity.Property(e => e.UserId).HasColumnName("User_Id");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Carts)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Cart_Products");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Carts)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Cart_Users");
+        });
+
         modelBuilder.Entity<Category>(entity =>
         {
             entity.ToTable("Category");
