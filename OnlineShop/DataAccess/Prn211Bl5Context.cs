@@ -19,6 +19,8 @@ public partial class Prn211Bl5Context : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<Color> Colors { get; set; }
+
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
@@ -27,11 +29,13 @@ public partial class Prn211Bl5Context : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<Thumbnail> Thumbnails { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer(new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetConnectionString("MyConnect"));
+        => optionsBuilder.UseSqlServer("Server=localhost;uid=sa;pwd=12345;database=PRN211_BL5; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -59,7 +63,24 @@ public partial class Prn211Bl5Context : DbContext
             entity.ToTable("Category");
 
             entity.Property(e => e.CategoryId).HasColumnName("Category_Id");
-            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Color>(entity =>
+        {
+            entity.ToTable("Color");
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsFixedLength();
+            entity.Property(e => e.ProductId).HasColumnName("Product_Id");
+            entity.Property(e => e.ProductImg).HasColumnName("Product_Img");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Colors)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_Color_Products");
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -95,7 +116,14 @@ public partial class Prn211Bl5Context : DbContext
         {
             entity.Property(e => e.ProductId).HasColumnName("Product_Id");
             entity.Property(e => e.CateId).HasColumnName("Cate_Id");
-            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Description).IsRequired();
+            entity.Property(e => e.Image).IsRequired();
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+            entity.Property(e => e.Size)
+                .HasMaxLength(10)
+                .IsFixedLength();
 
             entity.HasOne(d => d.Cate).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CateId)
@@ -106,9 +134,23 @@ public partial class Prn211Bl5Context : DbContext
         {
             entity.Property(e => e.RoleId).HasColumnName("Role_Id");
             entity.Property(e => e.RoleName)
+                .IsRequired()
                 .HasMaxLength(10)
                 .IsFixedLength()
                 .HasColumnName("Role_Name");
+        });
+
+        modelBuilder.Entity<Thumbnail>(entity =>
+        {
+            entity.ToTable("Thumbnail");
+
+            entity.Property(e => e.ColorId).HasColumnName("Color_Id");
+            entity.Property(e => e.ProductId).HasColumnName("Product_Id");
+            entity.Property(e => e.Thumbnail1).HasColumnName("Thumbnail");
+
+            entity.HasOne(d => d.Color).WithMany(p => p.Thumbnails)
+                .HasForeignKey(d => d.ColorId)
+                .HasConstraintName("FK_Thumbnail_Color");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -118,9 +160,13 @@ public partial class Prn211Bl5Context : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false);
             entity.Property(e => e.Dob).HasColumnType("datetime");
-            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(100);
             entity.Property(e => e.FullName).HasMaxLength(100);
-            entity.Property(e => e.Password).HasMaxLength(100);
+            entity.Property(e => e.Password)
+                .IsRequired()
+                .HasMaxLength(100);
             entity.Property(e => e.Phone)
                 .HasMaxLength(20)
                 .IsUnicode(false);

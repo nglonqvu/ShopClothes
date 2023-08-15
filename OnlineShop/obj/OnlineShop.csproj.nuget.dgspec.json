@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\OnlineShop.csproj": {}
+    "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\OnlineShop.csproj": {}
   },
   "projects": {
-    "D:\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\OnlineShop.csproj": {
+    "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\OnlineShop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\OnlineShop.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\OnlineShop.csproj",
         "projectName": "OnlineShop",
-        "projectPath": "D:\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\OnlineShop.csproj",
+        "projectPath": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\OnlineShop.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\obj\\",
+        "outputPath": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -49,11 +49,11 @@
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[7.0.10, )"
+              "version": "[6.0.21, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[7.0.10, )"
+              "version": "[6.0.21, )"
             }
           },
           "imports": [
