@@ -5,12 +5,20 @@
       "PackagePath": "staticwebassets\\OnlineShop.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\css\\ProductDetail.css",
+      "PackagePath": "staticwebassets\\css\\ProductDetail.css"
+    },
+    {
       "Id": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\js\\ProductDetail.js",
+      "PackagePath": "staticwebassets\\js\\ProductDetail.js"
     },
     {
       "Id": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\js\\site.js",

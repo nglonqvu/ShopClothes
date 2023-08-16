@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "M7EsXkUMDpiQon111FIrOcmBq+FrjNgy6OCw5qFPOr8=",
+  "Hash": "8cSv9l5vyUVBvt4LTWRzKHZui57StsNbmtlbc8O1qzw=",
   "Source": "OnlineShop",
   "BasePath": "_content/OnlineShop",
   "Mode": "Default",
@@ -51,6 +51,23 @@
       "OriginalItemSpec": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\OnlineShop.bundle.scp.css"
     },
     {
+      "Identity": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\css\\ProductDetail.css",
+      "SourceId": "OnlineShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\",
+      "BasePath": "_content/OnlineShop",
+      "RelativePath": "css/ProductDetail.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\ProductDetail.css"
+    },
+    {
       "Identity": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\css\\site.css",
       "SourceId": "OnlineShop",
       "SourceType": "Discovered",
@@ -83,6 +100,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\js\\ProductDetail.js",
+      "SourceId": "OnlineShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\",
+      "BasePath": "_content/OnlineShop",
+      "RelativePath": "js/ProductDetail.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\ProductDetail.js"
     },
     {
       "Identity": "C:\\Users\\admin\\Desktop\\PRN_211_BL5_Project\\ShopClothes\\OnlineShop\\wwwroot\\js\\site.js",
