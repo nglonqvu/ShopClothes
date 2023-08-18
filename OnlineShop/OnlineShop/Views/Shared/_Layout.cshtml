@@ -1,0 +1,292 @@
+﻿@model ProfileModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Clothing Online Shop | Thương hiệu thời trang G1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
+    <meta name="author" content="Shreethemes" />
+    <meta name="email" content="support@shreethemes.in" />
+    <meta name="website" content="https://shreethemes.in" />
+    <meta name="Version" content="v1.2.0" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/lib/images/logoClothes.png">
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons -->
+    <link href="/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/remixicon.css" rel="stylesheet" type="text/css" />
+    <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
+    <!-- Css -->
+    <link href="/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link rel="stylesheet" href="/css/tiny-slider.css" />
+    <style>
+        .bg-footer {
+            background-color: #101019 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="topnav" class="defaultscroll sticky">
+        <div class="container">
+            <!-- Logo container-->
+            <a class="logo" href="@Url.Action("Index", "Home")">
+                <img src="/lib/images/logoClothes.png" height="50" width="100" style="border-radius:15px" class="logo-light-mode" alt="">
+                <img src="/lib/images/logoClothes.png" height="50" width="100" style="border-radius:15px" class="logo-dark-mode" alt="">
+            </a>
+            <!-- Logo End -->
+            <!-- Start Mobile Toggle -->
+            <div class="menu-extras">
+                <div class="menu-item">
+                    <!-- Mobile menu toggle-->
+                    <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </a>
+                    <!-- End mobile menu toggle-->
+                </div>
+            </div>
+            <!-- End Mobile Toggle -->
+            <!-- Start Dropdown -->
+            @if (ViewBag.IsLoggedIn != null && (bool)ViewBag.IsLoggedIn)
+            {
+                <ul class="dropdowns list-inline mb-0">
+                    <li class="list-inline-item mb-0">
+                        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                            <div class="btn btn-icon btn-pills btn-info"><i data-feather="shopping-cart" class="fea icon-sm"></i></div>
+                        </a>
+                    </li>
+
+                    <li class="list-inline-item mb-0 ms-1">
+                        <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-info" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                            <i class="uil uil-search"></i>
+                        </a>
+                    </li>
+                        @if (Model.RoleName.Trim() == "Customer")
+                        {
+                            <li class="list-inline-item mb-0 ms-1">
+                                <div class="dropdown dropdown-primary">
+                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="@Url.Content("~/Avatars/" + Model.Avatar)" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                                    <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                        <a class="dropdown-item d-flex align-items-center text-dark" href="Profile">
+                                            <img src="@Url.Content("~/Avatars/" + Model.Avatar)" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                            <div class="flex-1 ms-2">
+                                                <span class="d-block mb-1">@Model.FullName</span>
+                                                <small class="text-muted">@Model.RoleName</small>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item text-dark" href="@Url.Action("Index", "Profile")"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
+                                        <a class="dropdown-item text-dark" href="#"><span class="mb-0 d-inline-block me-1"><i class="uil uil-bill align-middle h6"></i></span> Đơn hàng của tôi</a>
+                                        <div class="dropdown-divider border-top"></div>
+                                        <a class="dropdown-item text-dark" href="@Url.Action("Index", "Logout")"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        else if (Model.RoleName.Trim() == "Admin")
+                        {
+                            <li class="list-inline-item mb-0 ms-1">
+                                <div class="dropdown dropdown-primary">
+                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="@Url.Content("~/Avatars/" + Model.Avatar)" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                                    <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                        <a class="dropdown-item d-flex align-items-center text-dark" href="Profile">
+                                            <img src="@Url.Content("~/Avatars/" + Model.Avatar)" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                            <div class="flex-1 ms-2">
+                                                <span class="d-block mb-1">@Model.FullName</span>
+                                                <small class="text-muted">@Model.RoleName</small>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item text-dark" href="@Url.Action("Index", "Profile")"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
+                                        <a class="dropdown-item text-dark" href="#"><span class="mb-0 d-inline-block me-1"><i class="uil uil-bill align-middle h6"></i></span> Đơn hàng của tôi</a>
+                                        <div class="dropdown-divider border-top"></div>
+                                        <a class="dropdown-item text-dark" href="#"><span class="mb-0 d-inline-block me-1"><i class="uil uil-clipboard-notes align-middle h6"></i></span> Quản lý tài khoản</a>
+                                        <a class="dropdown-item text-dark" href="#"><span class="mb-0 d-inline-block me-1"><i class="uil uil-clipboard-notes align-middle h6"></i></span> Quản lý sản phẩm</a>
+                                        <a class="dropdown-item text-dark" href="#"><span class="mb-0 d-inline-block me-1"><i class="uil uil-clipboard-notes align-middle h6"></i></span> Quản lý hóa đơn</a>
+                                        <div class="dropdown-divider border-top"></div>
+                                        <a class="dropdown-item text-dark" href="@Url.Action("Index", "Logout")"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                </ul>
+            }
+            else
+            {
+                <ul class="dropdowns list-inline mb-0">
+
+                    <span class="btn btn-pills btn-info">
+                        <strong style="color: #000">
+                            <strong style="font-size: 14px">
+                                <strong style="font-family: monospace">
+                                    <a href="@Url.Action("Index", "Login")" style="color: white">Đăng nhập</a>
+                                </strong>
+                            </strong>
+                        </strong>
+                    </span>
+
+                </ul>
+                <ul class="dropdowns list-inline mb-0">
+                    <span class="">
+                        <strong style="color: #000">
+                            <strong style="font-size: 14px">
+                                <strong style="font-family: monospace">
+                                    <a href="@Url.Action("Index", "Register")" style="color: black">Đăng ký</a>
+                                </strong>
+                            </strong>
+                        </strong>
+                    </span>
+
+                </ul>
+            }
+
+            <!-- Start Dropdown -->
+
+            <div id="navigation">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu nav-left">
+                    @{
+                        if (Model != null && Model.RoleName.Trim() == "Admin")
+                        {
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Sản phẩm</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="#" class="sub-menu-item">Cửa hàng</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Đơn hàng</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="#" class="sub-menu-item">Giỏ hàng của tôi</a></li>
+                                    <li><a href="#" class="sub-menu-item">Đơn hàng của tôi</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Quản lý</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="#" class="sub-menu-item">Quản lý tài khoản</a></li>
+                                    <li><a href="#" class="sub-menu-item">Quản lý sản phẩm</a></li>
+                                    <li><a href="#" class="sub-menu-item">Quản lý hóa đơn</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else if (Model != null && Model.RoleName.Trim() == "Customer")
+                        {
+                            <li><a href="@Url.Action("Index", "Home")" class="sub-menu-item">Trang chủ</a></li>
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Sản phẩm</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="#" class="sub-menu-item">Cửa hàng</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Đơn hàng</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="#" class="sub-menu-item">Giỏ hàng của tôi</a></li>
+                                    <li><a href="#" class="sub-menu-item">Đơn hàng của tôi</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a href="@Url.Action("Index", "Home")" class="sub-menu-item">Trang chủ</a></li>
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Sản phẩm</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="#" class="sub-menu-item">Cửa hàng</a></li>
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul><!--end navigation menu-->
+            </div><!--end navigation-->
+        </div><!--end container-->
+    </header><!--end header-->
+    @RenderBody()
+
+    <!-- Start -->
+    <footer class="bg-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                    <a href="#" class="logo-footer">
+                        <img src="/lib/images/logoClothes.png" style="border-radius:10px" height="50" width="70" alt="">
+                        <strong style="color: #ffffff; font-size: 20px">Clothing Online Shop</strong>
+                    </a>
+                    <p class="mt-4 me-xl-5">Chúng tôi tự hào là một địa chỉ đáng tin cậy cho tất cả những ai đam mê thời trang và mong muốn sở hữu những bộ trang phục đẹp và phong cách. Với bề dày kinh nghiệm và sự tận tâm, chúng tôi đã xây dựng lên một sân chơi thú vị cho những người yêu thời trang.</p>
+                </div><!--end col-->
+
+                <div class="col-xl-7 col-lg-8 col-md-12">
+                    <div class="row">
+                        <div class="col-md-8 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                            <h5 class="text-light title-dark footer-head">Công ty thời trang trực tuyến G1</h5>
+                            <ul class="list-unstyled footer-list mt-4">
+                                <li><a href="#" class="text-foot"><i data-feather="chevron-right" class="fea icon-sm"> </i> Mã số thuế: 0109922901</a></li>
+                                <li><a href="#" class="text-foot"><i data-feather="chevron-right" class="fea icon-sm"> </i> Ngày thành lập: 08/08/2022</a></li>
+                                <li><a href="#" class="text-foot"><i data-feather="chevron-right" class="fea icon-sm"> </i> Lĩnh vực: Thời trang, xu hướng, công nghệ.</a></li>
+                                <li><a href="#" class="text-foot"><i data-feather="chevron-right" class="fea icon-sm"> </i> G1 luôn đồng hành cập nhật xu hướng thời trang mới.</a></li>
+                            </ul>
+                        </div><!--end col-->
+
+                        
+
+                        <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                            <h5 class="text-light title-dark footer-head">Địa chỉ liên hệ</h5>
+                            <ul class="list-unstyled footer-list mt-4">
+                                <li class="d-flex align-items-center">
+                                    <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                    <a href="mailto:prn211-g1@fpt.edu.vn" class="text-foot ms-2">PRN211-G1@fpt.edu.vn</a>
+                                </li>
+
+                                <li class="d-flex align-items-center">
+                                    <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                    <a href="tel:+152534-468-854" class="text-foot ms-2">+152 534-468-854</a>
+                                </li>
+
+                                <li class="d-flex align-items-center">
+                                    <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                    <a href="javascript:void(0)" class="video-play-icon text-foot ms-2">View on Google map</a>
+                                </li>
+                            </ul>
+
+                            <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
+                                <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="facebook" class="fea icon-sm fea-social"></i></a></li>
+                                <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="instagram" class="fea icon-sm fea-social"></i></a></li>
+                                <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="twitter" class="fea icon-sm fea-social"></i></a></li>
+                                <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="linkedin" class="fea icon-sm fea-social"></i></a></li>
+                            </ul><!--end icon-->
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end col-->
+            </div><!--end row-->
+        </div><!--end container-->
+
+        <div class="container mt-5">
+            <div class="pt-4 footer-bar">
+                <div class="row align-items-center">
+                    <div class="col-sm-6">  
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+    </footer><!--end footer-->
+    <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-info back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <!-- Icons -->
+    <script src="../js/feather.min.js"></script>
+    <!-- Main Js -->
+    <script src="../js/app.js"></script>
+    <!-- SLIDER -->
+    <script src="/js/tiny-slider.js"></script>
+    <script src="/js/tiny-slider-init.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
