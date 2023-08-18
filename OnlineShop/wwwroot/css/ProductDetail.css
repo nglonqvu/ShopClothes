@@ -60,21 +60,44 @@
     margin-top: 5px
 }
 
-    .colors ul {
+.colors ul {
+    list-style: none;
+    display: flex;
+    padding-left: 0px
+}
+
+.colors ul li {
+    height: 20px;
+    width: 20px;
+    display: flex;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer
+}
+
+.size {
+    margin-top: 5px
+}
+
+.size ul {
+    list-style: none;
+    display: flex;
+    padding-left: 0px
+}
+
+    .size ul li {
         list-style: none;
+        height: 25px;
+        width: 40px;
+        border : 1px solid black;
+        text-align: center;
         display: flex;
-        padding-left: 0px
+        border-radius: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+        align-items: baseline;
+        justify-content: center;
     }
-
-        .colors ul li {
-            height: 20px;
-            width: 20px;
-            display: flex;
-            border-radius: 50%;
-            margin-right: 10px;
-            cursor: pointer
-        }
-
 
 .right-side {
     position: relative
@@ -160,4 +183,44 @@
     height: 50px;
     width: 150px;
     border-radius: 0px !important
+}
+
+.highlight {
+    background-color: yellow;
+}
+
+.quantity {
+    display: flex;
+    width: 100px;
+    height: 40px;
+    border: 1px solid #000;
+    border-radius: 1.8rem;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 23px;
+}
+
+.quantity__augure, .quantity__reduce {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 100%;
+    line-height: 1em;
+}
+
+.quantity input {
+    border: 0;
+    background-color: transparent;
+    pointer-events: none;
+    text-align: center;
+    flex: 1;
+    max-width: 40px;
+}
+
+a {
+    background-color: transparent;
+    text-decoration: none;
+    color: inherit;
+    transition: all .2s;
 }

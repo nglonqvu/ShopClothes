@@ -23,7 +23,7 @@ namespace OnlineShop.Controllers
                 var productDetail = db.ProductDetails.FirstOrDefault(p => p.ProductId == productId && p.ColorId == firstColorId);               
                 if (productDetail == null)
                 {
-                    return Redirect("Index");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -89,6 +89,17 @@ namespace OnlineShop.Controllers
             }
 
             return Json(null);
+        }
+
+        [HttpPost]
+        public IActionResult GetQuantityByColorAndSize(int productId, int colorId, int sizeId)
+        {
+            var quantity = db.ProductDetails
+                .Where(p => p.ProductId == productId && p.ColorId == colorId && p.SizeId == sizeId)
+                .Select(p => p.Quantity)
+                .FirstOrDefault();
+
+            return Json(quantity);
         }
     }
 }

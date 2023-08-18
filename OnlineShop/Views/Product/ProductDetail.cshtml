@@ -33,7 +33,7 @@
                         @foreach (var thumbnail in Model.Thumbnails)
                         {
                             <li>
-                                <img id="thumbnail_image" onclick="changeImage(this)" src="@thumbnail.Thumbnail1" width="70">
+                                <img id="thumbnail_image" onclick="changeImage('@(thumbnail.Thumbnail1)')" src="@thumbnail.Thumbnail1" width="70">
                             </li>
                         }
                     </ul>
@@ -52,30 +52,22 @@
                     <p>@Model.Product.Description</p>
                 </div>
                 <h3>@Model.Product.Price.ToString("#,##0") ₫</h3>
-                <div class="ratings d-flex flex-row align-items-center">
-                    <div class="d-flex flex-row">
-                        <i class='bx bxs-star'></i>
-                        <i class='bx bxs-star'></i>
-                        <i class='bx bxs-star'></i>
-                        <i class='bx bxs-star'></i>
-                        <i class='bx bx-star'></i>
-                    </div>
-                </div>	<div class="mt-5">
+                <div class="mt-5">
                     <span class="fw-bold">Color</span>
                     <div class="colors">
                         <ul id="marker">
                             @foreach (var color in Model.Colors)
                             {
-                                <li style="background-color: @color.Name" onclick="changeImageByColor(@(Model.Product.ProductId), @(color.Id))"></li>
+                                <li style="background-color: @color.Name" onclick="changeImageByColor(@(Model.Product.ProductId), '@(color.Id)')"></li>
                             }
                         </ul>
                     </div>
                     <span class="fw-bold">Size</span>
-                    <div class="colors">
+                    <div class="size">
                         <ul id="marker">
                             @foreach (var size in Model.Sizes)
                             {
-                                <li>@size.Name</li>
+                                <li class="size-item" data-size-id="@size.SizeId" onclick="highlightAndGetValue(this)">@size.Name</li>
                             }
                         </ul>
                     </div>
@@ -89,7 +81,14 @@
 </div>
 </html>
 <script>
+    var selectedColorId = null;
+    var selectedSizeId = null;
+    var mainImage = document.getElementById("main_product_image");
+    var thumbnailImage = document.getElementById("thumbnail_image");
+    var currentMainImageUrl = "@Model.ProductDetail.Image";
+    var currentThumbnailImageUrl = thumbnailImage.src;
     function changeImageByColor(productId, colorId) {
+        selectedColorId = colorId;
         $.ajax({
             url: '/Product/ChangeImageByColor',
             type: 'POST',
@@ -97,10 +96,38 @@
             success: function (response) {
                 var mainImage = document.getElementById('main_product_image');
                 mainImage.src = response.mainImageUrl;
+                currentMainImageUrl = response.mainImageUrl;
 
                 var thumbnailImage = document.getElementById('thumbnail_image');
                 thumbnailImage.src = response.thumbnailImageUrl;
+                currentThumbnailImageUrl = response.thumbnailImageUrl;
             }
         });
     }
+    function highlightAndGetValue(item) {
+
+        var sizeItems = document.querySelectorAll(".size-item");
+
+        sizeItems.forEach(function (otherItem) {
+            otherItem.style.backgroundColor = "white";
+            otherItem.style.color = "black";
+        });
+
+        item.style.backgroundColor = "black";
+        item.style.color = "white";
+
+        selectedSizeId = item.getAttribute("data-size-id");
+    }
+
+    console.log(currentMainImageUrl + " " + currentThumbnailImageUrl);
+    function changeImage(image1) {
+        mainImage.src = image1;
+        thumbnailImage.src = currentMainImageUrl;
+        mainImage.src = currentThumbnailImageUrl;
+
+        var tempImageUrl = currentMainImageUrl;
+        currentMainImageUrl = currentThumbnailImageUrl;
+        currentThumbnailImageUrl = tempImageUrl;
+    }
+
 </script>
