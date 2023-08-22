@@ -88,8 +88,8 @@
                     @foreach (var item in ViewBag.Products)
                     {
                         <div class="tiny-slide">
-                            <a href="#" class="card pharpachy-categories border-0 rounded overflow-hidden">
-                                <img src="/lib/images/products/@item.Image" style="height:280px;width:260px;" class="img-fluid" alt="">
+                            <a asp-controller="Product" asp-action = "ProductDetail" asp-route-productId ="@item.ProductId" class="card pharpachy-categories border-0 rounded overflow-hidden">
+                                <img src="@item.Image" style="height:280px;width:260px;" class="img-fluid" alt="">
                                 <div class="category-title">
                                     <span class="text-white title-white"><span class="h5">@item.Name</span><br>@string.Format("{0:N0}", item.Price) VNĐ</span>
                                 </div>

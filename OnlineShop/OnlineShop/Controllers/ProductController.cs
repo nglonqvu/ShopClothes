@@ -1,26 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DataAccess;
-using System.Dynamic;
+using OnlineShop.DataAccess.DAO;
+using OnlineShop.Models;
 
 namespace OnlineShop.Controllers
 {
     public class ProductController : Controller
     {
         private readonly PRN211_BL5Context db;
+        private readonly UserDAO userDAO;
 
         public ProductController(PRN211_BL5Context _db)
         {
             db = _db;
         }
 
-        public IActionResult ProductDetail()
+
+        public IActionResult ProductDetail(int productId)
         {
-            int productId = 5;
             try
-            {   
+            {
+                
                 var product = db.Products.FirstOrDefault(p => p.ProductId == productId);
-                var firstColorId = db.ProductDetails.FirstOrDefault()?.ColorId;
-                var productDetail = db.ProductDetails.FirstOrDefault(p => p.ProductId == productId && p.ColorId == firstColorId);               
+                var firstColorId = db.ProductDetails.Where(e => e.ProductId == productId).FirstOrDefault()?.ColorId;
+                var productDetail = db.ProductDetails.FirstOrDefault(p => p.ProductId == productId && p.ColorId == firstColorId);
                 if (productDetail == null)
                 {
                     return RedirectToAction("Index", "Home");
@@ -44,12 +47,15 @@ namespace OnlineShop.Controllers
                     var thumbnails = db.Thumbnails
                         .Where(t => thumbnailIds.Contains(t.Id))
                         .ToList();
-                    dynamic viewModel = new ExpandoObject();
-                    viewModel.ProductDetail = productDetail;
-                    viewModel.Colors = colors;
-                    viewModel.Sizes = sizes;
-                    viewModel.Product = product;
-                    viewModel.Thumbnails = thumbnails; 
+
+                    var viewModel = new ProductDetailModel
+                    {
+                        Product = product,
+                        ProductDetail = productDetail,
+                        Colors = colors,
+                        Sizes = sizes,
+                        Thumbnails = thumbnails
+                    };
 
                     return View(viewModel);
                 }
@@ -100,6 +106,16 @@ namespace OnlineShop.Controllers
                 .FirstOrDefault();
 
             return Json(quantity);
+        }
+
+        private async Task<User> GetCurrentLoggedInUser()
+        {
+            string email = HttpContext.Session.GetString("Email");
+            if (!string.IsNullOrEmpty(email))
+            {
+                return await userDAO.GetUser(email);
+            }
+            return null;
         }
     }
 }

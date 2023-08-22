@@ -1,5 +1,7 @@
-﻿@model dynamic
-﻿
+﻿@model ProductDetailModel
+@{
+    Layout = null;
+}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -20,7 +22,6 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link rel="stylesheet" href="~/css/ProductDetail.css" />
     <link rel="" href="~/js/ProductDetail.js" />
-    <title>@ViewData["Title"] - OnlineShop</title>
 </head>
 <div class="card">
     <div class="row g-0">
@@ -51,7 +52,7 @@
                 <div class="mt-2 pr-3 content">
                     <p>@Model.Product.Description</p>
                 </div>
-                <h3>@Model.Product.Price.ToString("#,##0") ₫</h3>
+                <h3>@Model.Product.Price    ₫</h3>
                 <div class="mt-5">
                     <span class="fw-bold">Color</span>
                     <div class="colors">
