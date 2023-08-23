@@ -127,7 +127,6 @@ namespace OnlineShop.Controllers
                     .Where(p => p.ProductId == productId && p.ColorId == colorId && p.SizeId == sizeId)
                     .Select(p => p.Quantity)
                     .FirstOrDefault();
-
                 return Json(quantity);
             }
 

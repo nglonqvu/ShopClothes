@@ -61,7 +61,7 @@
                     <div class="mt-5">
                         <span class="fw-bold">Color</span>
                         <div class="colors">
-                            
+
                             <ul id="marker">
                                 @foreach (var color in ViewBag.ProductDetail.Colors)
                                 {
@@ -83,7 +83,7 @@
 
 
                             <div onclick="increase()" class="size-item" style="align-self: center; text-align: center; border: 1px solid #ebebeb; padding: 15px; margin-right:10px"><i class="fa-solid fa-plus"></i></div>
-                            <div class="size-item" style="align-self: center; text-align: center; height: 150%;"><input onchange="quantity()" id="quantity" name="quantity" value="1" type="number" min="0" max="99" /></div>
+                            <div class="size-item" style="align-self: center; text-align: center; height: 150%;"><input readonly onchange="quantity()" id="quantity" name="quantity" value="1" type="number" min="0" /></div>
                             <div onclick="decrease()" class="size-item" style="align-self: center; text-align: center; border: 1px solid #ebebeb; padding: 15px; margin-left:10px"><i class="fa-solid fa-minus"></i></div>
 
 
@@ -94,7 +94,6 @@
                     <input hidden id="sizeId" name="sizeId" value="@ViewBag.ProductDetail.ProductDetail.SizeId" />
                     <div class="buttons d-flex flex-row mt-5 gap-3">
                         <button type="submit" class="btn btn-light">Add to Cart &nbsp; <i class="fa-solid fa-cart-shopping"></i></button>
-                        <button class="btn btn-dark">Buy Now</button>
                     </div>
                 </div>
             </form>
@@ -110,7 +109,7 @@
     var thumbnailImage = document.getElementById("thumbnail_image");
     var currentMainImageUrl = "@ViewBag.ProductDetail.Product.Image";
     var currentThumbnailImageUrl = thumbnailImage.src;
-
+    var maxquantity = 0;
 
 
     function changeImageByColor(productId, colorId) {
@@ -129,6 +128,7 @@
                 currentThumbnailImageUrl = response.thumbnailImageUrl;
 
                 document.getElementById('colorId').value = response.colorId;
+                document.getElementById("quantity").value = 1;
             }
         });
     }
@@ -145,8 +145,36 @@
         item.style.color = "white";
 
         selectedSizeId = item.getAttribute("data-size-id");
+        document.getElementById("quantity").value = 1;
+    }
+    var firstSizeItem = document.querySelector(".size-item");
+    if (firstSizeItem) {
+        highlightAndGetValue(firstSizeItem);
+        selectedSizeId = selectedSizeId;
     }
 
+    function updateQuantity(productId, colorId, sizeId) {
+        $.ajax({
+            url: '/Product/GetQuantityByColorAndSize',
+            type: 'POST',
+            data: { productId: productId, colorId: colorId, sizeId: sizeId },
+            success: function (response) {
+                var quantityElement = document.getElementById('quantity');
+                quantityElement.max = response;
+                maxquantity = response;
+            }
+        });
+    }
+
+    var sizeItems = document.querySelectorAll(".size-item");
+    sizeItems.forEach(function (sizeItem) {
+        sizeItem.addEventListener("click", function () {
+            var selectedColorId = document.getElementById('colorId').value;
+            var selectedSizeId = sizeItem.getAttribute("data-size-id");
+            var productId = @ViewBag.ProductDetail.Product.ProductId;
+            updateQuantity(productId, selectedColorId, selectedSizeId);
+        });
+    });
 
     function changeImage(image1) {
         mainImage.src = image1;
@@ -156,7 +184,6 @@
         var tempImageUrl = currentMainImageUrl;
         currentMainImageUrl = currentThumbnailImageUrl;
         currentThumbnailImageUrl = tempImageUrl;
-        console.log(currentMainImageUrl + " " + currentThumbnailImageUrl);
     }
 
     function increase() {
@@ -172,8 +199,8 @@
     }
 
     function quantity() {
-        if (document.getElementById("quantity").value > @ViewBag.ProductDetail.ProductDetail.Quantity) {
-            document.getElementById("quantity").value = @ViewBag.ProductDetail.ProductDetail.Quantity
+        if (document.getElementById("quantity").value > maxquantity) {
+            document.getElementById("quantity").value = maxquantity
         }
         if (document.getElementById("quantity").value < 1) {
             document.getElementById("quantity").value = 1
