@@ -25,7 +25,7 @@
     <link rel="" href="~/js/ProductDetail.js" />
     <script src="https://kit.fontawesome.com/5a5f994da7.js" crossorigin="anonymous"></script>
 </head>
-<div class="card container">
+<div class="card container" style="margin-top: 100px; margin-bottom: 50px;">
     <div class="row g-0">
         <div class="col-md-6 border-end">
             <div class="d-flex flex-column justify-content-center">
@@ -56,7 +56,7 @@
                     <div class="mt-2 pr-3 content">
                         <p>@ViewBag.ProductDetail.Product.Description</p>
                     </div>
-                    <div style="padding-left: 15px; background-color: #ebebeb"><h4>@string.Format("{0:N0}", @ViewBag.ProductDetail.Price) VNĐ</h4></div>
+                    <div style="padding-left: 15px; background-color: #ebebeb"><h4>@string.Format("{0:N0}", @ViewBag.ProductDetail.Product.Price) VNĐ</h4></div>
 
                     <div class="mt-5">
                         <span class="fw-bold">Color</span>
@@ -65,7 +65,7 @@
                             <ul id="marker">
                                 @foreach (var color in ViewBag.ProductDetail.Colors)
                                 {
-                                    <li style="background-color: @color.Name" onclick="changeImageByColor(@(ViewBag.ProductDetailt.ProductId), '@(color.Id)')"></li>
+                                    <li style="background-color: @color.Name; border: 1px solid black;" onclick="changeImageByColor(@ViewBag.ProductDetail.Product.ProductId, '@(color.Id)')"></li>
                                 }
                             </ul>
                         </div>
@@ -89,9 +89,9 @@
 
                         </div>
                     </div>
-                    <input hidden name="productId" value="@ViewBag.ProductDetail.ProductId" />
-                    <input hidden id="colorId" name="colorId" value="@ViewBag.ProductDetail.ColorId" />
-                    <input hidden id="sizeId" name="sizeId" value="@ViewBag.ProductDetail.SizeId" />
+                    <input hidden name="productId" value="@ViewBag.ProductDetail.Product.ProductId" />
+                    <input hidden id="colorId" name="colorId" value="@ViewBag.ProductDetail.ProductDetail.ColorId" />
+                    <input hidden id="sizeId" name="sizeId" value="@ViewBag.ProductDetail.ProductDetail.SizeId" />
                     <div class="buttons d-flex flex-row mt-5 gap-3">
                         <button type="submit" class="btn btn-light">Add to Cart &nbsp; <i class="fa-solid fa-cart-shopping"></i></button>
                         <button class="btn btn-dark">Buy Now</button>
@@ -108,7 +108,7 @@
     var selectedSizeId = null;
     var mainImage = document.getElementById("main_product_image");
     var thumbnailImage = document.getElementById("thumbnail_image");
-    var currentMainImageUrl = "@ViewBag.ProductDetail.Image";
+    var currentMainImageUrl = "@ViewBag.ProductDetail.Product.Image";
     var currentThumbnailImageUrl = thumbnailImage.src;
 
 
@@ -172,8 +172,8 @@
     }
 
     function quantity() {
-        if (document.getElementById("quantity").value > @ViewBag.ProductDetail.Quantity) {
-            document.getElementById("quantity").value = @ViewBag.ProductDetail.Quantity
+        if (document.getElementById("quantity").value > @ViewBag.ProductDetail.ProductDetail.Quantity) {
+            document.getElementById("quantity").value = @ViewBag.ProductDetail.ProductDetail.Quantity
         }
         if (document.getElementById("quantity").value < 1) {
             document.getElementById("quantity").value = 1
