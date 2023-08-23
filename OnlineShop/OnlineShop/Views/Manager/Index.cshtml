@@ -1,84 +1,143 @@
 ﻿@model IEnumerable<OnlineShop.DataAccess.Product>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout =null;
+    ViewData["Title"] = "Product List";
+    Layout = null;
 }
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
+    <meta name="author" content="Shreethemes" />
+    <meta name="email" content="support@shreethemes.in" />
+    <meta name="website" content="https://shreethemes.in" />
+    <meta name="Version" content="v1.2.0" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/lib/images/logoClothes.png">
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons -->
+    <link href="/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/remixicon.css" rel="stylesheet" type="text/css" />
+    <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
+    <!-- Css -->
+    <link href="/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <style>
+        .toast-top-right {
+            top: 90px !important;
+            right: 30px;
+        }
 
-<h1 >Manager Product</h1>
+        .bg-footer {
+            background-color: #101019 !important;
+        }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            
-                <td>
-                    @if (item.Image != null)
-                    {
-                        <img src="@item.Image" alt="Image" width="100" />
-                    }
-                    else
-                    {
-                        <span>No Image</span>
-                    }
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cate.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                 <a  asp-action="Index2"  asp-route-id="@item.ProductId">Detail</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+        .alert {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
 
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-<div>
-    <a asp-controller="Home" asp-action="Index">Home</a>
+            .alert.show {
+                opacity: 1;
+            }
+
+        .confirmation-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1050;
+            background-color: white;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            text-align: center;
+        }
+
+            .confirmation-modal h5 {
+                margin-top: 0;
+                color: #dc3545;
+                font-size: 24px;
+            }
+
+            .confirmation-modal p {
+                margin-bottom: 20px;
+                font-size: 18px;
+            }
+
+            .confirmation-modal .button-container {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .confirmation-modal button {
+                margin-left: 10px;
+                font-size: 16px;
+            }
+    </style>
+</head>
+<div class="container">
+    <h1 class="text-center">Manager Product</h1>
+
+    <p class="text-right">
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    </p>
+
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Quantity</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            <img src="@item.Image" alt="Product Image" class="img-thumbnail" width="100" />
+                        }
+                        else
+                        {
+                            <span>No Image</span>
+                        }
+                    </td>
+                    <td>@item.Description</td>
+                    <td>@item.Status</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Cate.Name</td>
+                    <td>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>
+                        <a class="btn btn-info" asp-action="Index2" asp-route-id="@item.ProductId">Detail</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-center">
+        <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Home</a>
+    </div>
 </div>

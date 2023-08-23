@@ -1,100 +1,171 @@
 ﻿@model IEnumerable<OnlineShop.DataAccess.ProductDetail>
 
 @{
-    ViewData["Title"] = "Index2";
+    ViewData["Title"] = "Product Detail";
     Layout = null;
 }
-
-<h1>Product detail</h1>
-<form method="get">
-    <label for="color">Filter by Color:</label>
-    <select id="color" name="colorId">
-        <option value="">All Colors</option>
-        @foreach (var color in ViewData["Colors"] as List<OnlineShop.DataAccess.Color>)
-        {
-            <option value="@color.Id">@color.Name</option>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
+    <meta name="author" content="Shreethemes" />
+    <meta name="email" content="support@shreethemes.in" />
+    <meta name="website" content="https://shreethemes.in" />
+    <meta name="Version" content="v1.2.0" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/lib/images/logoClothes.png">
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons -->
+    <link href="/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/remixicon.css" rel="stylesheet" type="text/css" />
+    <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
+    <!-- Css -->
+    <link href="/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <style>
+        .toast-top-right {
+            top: 90px !important;
+            right: 30px;
         }
-    </select>
-    <label for="size">Filter by Size:</label>
-    <select id="size" name="sizeId">
-        <option value="">All Sizes</option>
-        @foreach (var size in ViewData["Sizes"] as List<OnlineShop.DataAccess.Size>)
-        {
-            <option value="@size.SizeId">@size.Name</option>
+
+        .bg-footer {
+            background-color: #101019 !important;
         }
-    </select>
-    <button type="submit">Apply Filters</button>
-</form>
-<p>
-    <a asp-action="Create2"  >Create New</a>
-</p>
 
+        .alert {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Color)
-            </th>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.Size)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Thumbnail)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        
-@foreach (var item in Model) {
-        <tr>
-                <td>
-                    @if (item.Image != null)
-                    {
-                        <img src="@item.Image" alt="Image" width="100" />
-                    }
-                    else
-                    {
-                        <span>No Image</span>
-                    }
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color.Name)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Size.Name)
-            </td>
-                <td>
-                    @if (item.Thumbnail != null)
-                    {
-                        <img src="@item.Thumbnail.Thumbnail1" alt="Thumbnail" width="100" />
-                    }
-                    else
-                    {
-                        <span>No Thumbnail</span>
-                    }
-                </td>
-            <td>
-                <a asp-action="Edit2" asp-route-id="@item.ProductDetailId">Edit</a> |
-                <a asp-action="Delete2" asp-route-id="@item.ProductDetailId">Delete</a>
-                
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-<div>
-    <a asp-controller="Home" asp-action="Index">Home</a>
+            .alert.show {
+                opacity: 1;
+            }
+
+        .confirmation-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1050;
+            background-color: white;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            text-align: center;
+        }
+
+            .confirmation-modal h5 {
+                margin-top: 0;
+                color: #dc3545;
+                font-size: 24px;
+            }
+
+            .confirmation-modal p {
+                margin-bottom: 20px;
+                font-size: 18px;
+            }
+
+            .confirmation-modal .button-container {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .confirmation-modal button {
+                margin-left: 10px;
+                font-size: 16px;
+            }
+    </style>
+</head>
+<div class="container">
+    <h1 class="text-center">Product Detail</h1>
+
+    <form method="get" class="form-inline mb-3">
+        <div class="form-group mr-2">
+            <label for="color" class="mr-2">Filter by Color:</label>
+            <select id="color" name="colorId" class="form-control">
+                <option value="">All Colors</option>
+                @foreach (var color in ViewData["Colors"] as List<OnlineShop.DataAccess.Color>)
+                {
+                    <option value="@color.Id">@color.Name</option>
+                }
+            </select>
+        </div>
+        <div class="form-group mr-2">
+            <label for="size" class="mr-2">Filter by Size:</label>
+            <select id="size" name="sizeId" class="form-control">
+                <option value="">All Sizes</option>
+                @foreach (var size in ViewData["Sizes"] as List<OnlineShop.DataAccess.Size>)
+                {
+                    <option value="@size.SizeId">@size.Name</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+    </form>
+
+    <p class="text-right">
+        <a class="btn btn-success" asp-action="Create2">Create New</a>
+    </p>
+
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Image</th>
+                <th>Quantity</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Thumbnail</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            <img src="@item.Image" alt="Image" class="img-thumbnail" width="100" />
+                        }
+                        else
+                        {
+                            <span>No Image</span>
+                        }
+                    </td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Color.Name</td>
+                    <td>@item.Size.Name</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Thumbnail?.Thumbnail1))
+                        {
+                            <img src="@item.Thumbnail.Thumbnail1" alt="Thumbnail" class="img-thumbnail" width="100" />
+                        }
+                        else
+                        {
+                            <span>No Thumbnail</span>
+                        }
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-action="Edit2" asp-route-id="@item.ProductDetailId">Edit</a>
+                        <a class="btn btn-danger" asp-action="Delete2" asp-route-id="@item.ProductDetailId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-center">
+        <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Home</a>
+    </div>
 </div>

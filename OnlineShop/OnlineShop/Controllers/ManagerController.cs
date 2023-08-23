@@ -12,24 +12,18 @@ namespace OnlineShop.Controllers
     public class ManagerController : Controller
     {
         private readonly UserDAO _userDAO;
-        private readonly AuthenticateUser authenticateUser;
-        private readonly Mailer mailer;
-        private readonly Md5 md5;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+       
         public ManagerController(IWebHostEnvironment webHostEnvironment)
         {
-            authenticateUser = new AuthenticateUser();
-            md5 = new Md5();
-            mailer = new Mailer();
+           
             _userDAO = new UserDAO();
-            _webHostEnvironment = webHostEnvironment;
         }
         public async Task<IActionResult> Index()
         {
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
-            if (!isLoggedIn)
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -39,7 +33,6 @@ namespace OnlineShop.Controllers
                 {
                     var products = await context.Products
                         .Include(pr => pr.Cate)
-
                         .ToListAsync();
                     return View(products);
                 }

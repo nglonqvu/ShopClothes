@@ -14,31 +14,26 @@ namespace OnlineShop.Controllers
 
         // GET: ManagerUserController
         private readonly UserDAO _userDAO;
-        private readonly AuthenticateUser authenticateUser;
-        private readonly Mailer mailer;
-        private readonly Md5 md5;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+       
         public ManagerUserController(IWebHostEnvironment webHostEnvironment)
         {
-            authenticateUser = new AuthenticateUser();
-            md5 = new Md5();
-            mailer = new Mailer();
+            
             _userDAO = new UserDAO();
-            _webHostEnvironment = webHostEnvironment;
+            
         }
         public async Task<ActionResult> Index()
         {
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
+           
             ViewBag.IsLoggedIn = isLoggedIn;
-            if (!isLoggedIn)
+            
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
             }
             else
             {
-
-
                 using (PRN211_BL5Context context = new PRN211_BL5Context())
                 {
                     var users = await context.Users
@@ -48,7 +43,15 @@ namespace OnlineShop.Controllers
                 }
             }
         }
-
+        private async Task<User> GetCurrentLoggedInUser()
+        {
+            string email = HttpContext.Session.GetString("Email");
+            if (!string.IsNullOrEmpty(email))
+            {
+                return await _userDAO.GetUser(email);
+            }
+            return null;
+        }
         // GET: ManagerUserController/Details/5
         public async Task<ActionResult> Details(int? id)
         {
@@ -71,15 +74,7 @@ namespace OnlineShop.Controllers
             }
         }
 
-        private async Task<User> GetCurrentLoggedInUser()
-        {
-            string email = HttpContext.Session.GetString("Email");
-            if (!string.IsNullOrEmpty(email))
-            {
-                return await _userDAO.GetUser(email);
-            }
-            return null;
-        }
+        
         // GET: ManagerUserController/Create
         public ActionResult Create()
         {
