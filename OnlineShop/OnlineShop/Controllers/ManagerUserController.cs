@@ -24,12 +24,9 @@ namespace OnlineShop.Controllers
         public async Task<ActionResult> Index()
         {
             User user = await GetCurrentLoggedInUser();
-            bool isLoggedIn = (user != null);
-            int isLoggedIn1 = (user != null && user.Role != null && user.Role != 3) ? 3 : 0;
-            ViewBag.IsLoggedIn1 = isLoggedIn1;
+            bool isLoggedIn = (user != null);     
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-
 
             if (!isLoggedIn || (userRole.HasValue && userRole.Value == 3))
             {
