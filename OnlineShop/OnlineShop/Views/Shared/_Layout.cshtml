@@ -114,6 +114,30 @@
                             </div>
                         </li>
                     }
+                    else if (Model.RoleName.Trim() == "Sale")
+                    {
+                        <li class="list-inline-item mb-0 ms-1">
+                            <div class="dropdown dropdown-primary">
+                                <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="@Url.Content("~/Avatars/" + Model.Avatar)" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                                <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                                    <a class="dropdown-item d-flex align-items-center text-dark" href="Profile">
+                                        <img src="@Url.Content("~/Avatars/" + Model.Avatar)" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                        <div class="flex-1 ms-2">
+                                            <span class="d-block mb-1">@Model.FullName</span>
+                                            <small class="text-muted">@Model.RoleName</small>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item text-dark" href="@Url.Action("Index", "Profile")"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
+                                    <a class="dropdown-item text-dark" href="#"><span class="mb-0 d-inline-block me-1"><i class="uil uil-bill align-middle h6"></i></span> Đơn hàng của tôi</a>
+                                    <div class="dropdown-divider border-top"></div>
+                                    <a class="dropdown-item text-dark" href="@Url.Action("Index", "Manager")"><span class="mb-0 d-inline-block me-1"><i class="uil uil-clipboard-notes align-middle h6"></i></span> Quản lý sản phẩm</a>
+                                    <a class="dropdown-item text-dark" href="#"><span class="mb-0 d-inline-block me-1"><i class="uil uil-clipboard-notes align-middle h6"></i></span> Quản lý hóa đơn</a>
+                                    <div class="dropdown-divider border-top"></div>
+                                    <a class="dropdown-item text-dark" href="@Url.Action("Index", "Logout")"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
+                                </div>
+                            </div>
+                        </li>
+                    }
                 </ul>
             }
             else
@@ -195,6 +219,32 @@
                                 </ul>
                             </li>
                         }
+                        else if (Model != null && Model.RoleName.Trim() == "Sale")
+                        {
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Sản phẩm</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="/Product/ProductList" class="sub-menu-item">Cửa hàng</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Đơn hàng</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="#" class="sub-menu-item">Giỏ hàng của tôi</a></li>
+                                    <li><a href="#" class="sub-menu-item">Đơn hàng của tôi</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="has-submenu parent-menu-item">
+                                <a href="javascript:void(0)">Quản lý</a><span class="menu-arrow"></span>
+                                <ul class="submenu">
+                                    <li><a href="@Url.Action("Index", "Manager")" class="sub-menu-item">Quản lý sản phẩm</a></li>
+                                    <li><a href="#" class="sub-menu-item">Quản lý hóa đơn</a></li>
+                                </ul>
+                            </li>
+                        }
+
                         else
                         {
                             <li><a href="@Url.Action("Index", "Home")" class="sub-menu-item">Trang chủ</a></li>
