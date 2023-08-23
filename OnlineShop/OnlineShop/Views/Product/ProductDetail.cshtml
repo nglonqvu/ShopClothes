@@ -93,7 +93,7 @@
                     <input hidden id="colorId" name="colorId" value="@ViewBag.ProductDetail.ProductDetail.ColorId" />
                     <input hidden id="sizeId" name="sizeId" value="@ViewBag.ProductDetail.ProductDetail.SizeId" />
                     <div class="buttons d-flex flex-row mt-5 gap-3">
-                        <button type="submit" class="btn btn-light">Add to Cart &nbsp; <i class="fa-solid fa-cart-shopping"></i></button>
+                        <button type="submit" class="btn btn-light" id="addToCartBtn">Add to Cart &nbsp; <i class="fa-solid fa-cart-shopping"></i></button>
                     </div>
                 </div>
             </form>
@@ -165,6 +165,13 @@
             data: { productId: productId, colorId: colorId, sizeId: sizeId },
             success: function (response) {
                 maxquantity = response;
+                var addToCartButton = document.getElementById("addToCartBtn");
+                if (maxquantity == null || maxquantity <= 0) {
+                    addToCartButton.style.display = "none"; 
+                }
+                else{
+                    addToCartButton.style.display = "block";
+                }
             }
         });
     }
@@ -214,6 +221,15 @@
                 quantityInput.value = currentQuantity - 1;
             }
             quantity();
+        }
+    }
+
+    function toggleAddToCartButton() {
+        var addToCartButton = document.getElementById("addToCartBtn");
+        if (maxquantity == null || maxquantity <= 0) {
+            addToCartButton.style.display = "none"; // Ẩn nút khi maxquantity là null hoặc không khả dụng
+        } else {
+            addToCartButton.style.display = "block"; // Hiện nút khi maxquantity có sẵn
         }
     }
 
