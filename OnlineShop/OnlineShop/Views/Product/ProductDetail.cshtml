@@ -82,9 +82,9 @@
                         <div class="size" style="display: flex">
 
 
-                            <div onclick="increase()" class="size-item" style="align-self: center; text-align: center; border: 1px solid #ebebeb; padding: 15px; margin-right:10px"><i class="fa-solid fa-plus"></i></div>
-                            <div class="size-item" style="align-self: center; text-align: center; height: 150%;"><input readonly onchange="quantity()" id="quantity" name="quantity" value="1" type="number" min="0" /></div>
-                            <div onclick="decrease()" class="size-item" style="align-self: center; text-align: center; border: 1px solid #ebebeb; padding: 15px; margin-left:10px"><i class="fa-solid fa-minus"></i></div>
+                            <div onclick="increase()" style="align-self: center; text-align: center; border: 1px solid #ebebeb; padding: 15px; margin-right:10px"><i class="fa-solid fa-plus"></i></div>
+                            <div class="size-item" style="align-self: center; text-align: center; height: 150%;"><input readonly onchange="quantity()" id="quantity" name="quantity" value="1" type="number" min="0" max="99" /></div>
+                            <div onclick="decrease()" style="align-self: center; text-align: center; border: 1px solid #ebebeb; padding: 15px; margin-left:10px"><i class="fa-solid fa-minus"></i></div>
 
 
                         </div>
@@ -145,7 +145,12 @@
         item.style.color = "white";
 
         selectedSizeId = item.getAttribute("data-size-id");
-        document.getElementById("quantity").value = 1;
+        if (maxquantity == null) {
+            document.getElementById("quantity").value = 0
+        }
+        else {
+            document.getElementById("quantity").value = 1;
+        }
     }
     var firstSizeItem = document.querySelector(".size-item");
     if (firstSizeItem) {
@@ -159,8 +164,6 @@
             type: 'POST',
             data: { productId: productId, colorId: colorId, sizeId: sizeId },
             success: function (response) {
-                var quantityElement = document.getElementById('quantity');
-                quantityElement.max = response;
                 maxquantity = response;
             }
         });
@@ -187,15 +190,31 @@
     }
 
     function increase() {
-        console.log("in");
-        document.getElementById("quantity").value -= -1
-        quantity()
+        var quantityInput = document.getElementById("quantity");
+        var currentQuantity = parseInt(quantityInput.value);
+        if (maxquantity == null) {
+            document.getElementById("quantity").value = 0
+        }
+        else {
+            if (currentQuantity < maxquantity) {
+                quantityInput.value = currentQuantity + 1;
+            }
+            quantity();
+        }
     }
 
     function decrease() {
-        console.log("de");
-        document.getElementById("quantity").value -= 1
-        quantity()
+        var quantityInput = document.getElementById("quantity");
+        var currentQuantity = parseInt(quantityInput.value);
+        if (maxquantity == null) {
+            document.getElementById("quantity").value = 0
+        }
+        else {
+            if (currentQuantity > 1) {
+                quantityInput.value = currentQuantity - 1;
+            }
+            quantity();
+        }
     }
 
     function quantity() {
@@ -204,6 +223,9 @@
         }
         if (document.getElementById("quantity").value < 1) {
             document.getElementById("quantity").value = 1
+        }
+        if (maxquantity == null) {
+            document.getElementById("quantity").value = 0
         }
     }
 </script>
