@@ -1,0 +1,97 @@
+﻿@model IEnumerable<OnlineShop.DataAccess.ProductDetail>
+
+@{
+    ViewData["Title"] = "Index2";
+    Layout = null;
+}
+
+<h1>Product detail</h1>
+<form method="get">
+    <label for="color">Filter by Color:</label>
+    <select id="color" name="colorId">
+        <option value="">All Colors</option>
+        @foreach (var color in ViewData["Colors"] as List<OnlineShop.DataAccess.Color>)
+        {
+            <option value="@color.Id">@color.Name</option>
+        }
+    </select>
+    <label for="size">Filter by Size:</label>
+    <select id="size" name="sizeId">
+        <option value="">All Sizes</option>
+        @foreach (var size in ViewData["Sizes"] as List<OnlineShop.DataAccess.Size>)
+        {
+            <option value="@size.SizeId">@size.Name</option>
+        }
+    </select>
+    <button type="submit">Apply Filters</button>
+</form>
+<p>
+    <a asp-action="Create2"  >Create New</a>
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Color)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.Size)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Thumbnail)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    @if (item.Image != null)
+                    {
+                        <img src="@item.Image" alt="Image" width="100" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color.Name)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Size.Name)
+            </td>
+                <td>
+                    @if (item.Thumbnail != null)
+                    {
+                        <img src="@item.Thumbnail.Thumbnail1" alt="Thumbnail" width="100" />
+                    }
+                    else
+                    {
+                        <span>No Thumbnail</span>
+                    }
+                </td>
+            <td>
+                <a asp-action="Edit2" asp-route-id="@item.ProductDetailId">Edit</a> |
+                <a asp-action="Delete2" asp-route-pid="@item.ProductId">Delete</a>
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
