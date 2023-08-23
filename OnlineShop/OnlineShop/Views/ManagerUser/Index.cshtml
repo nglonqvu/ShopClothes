@@ -29,9 +29,6 @@
                 @Html.DisplayNameFor(model => model.Dob)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Avatar)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
             <th>
@@ -67,9 +64,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Dob)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Avatar)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
@@ -91,3 +86,6 @@
 }
     </tbody>
 </table>
+<div>
+    <a asp-controller="Home" asp-action="Index">Home</a>
+</div>

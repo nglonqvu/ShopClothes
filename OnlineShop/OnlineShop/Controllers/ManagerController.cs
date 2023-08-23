@@ -29,29 +29,22 @@ namespace OnlineShop.Controllers
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
-            //if (!isLoggedIn)
-            //{
-            //    return RedirectToAction("Index", "Login");
-            //}
-            //else
-            //{
-            //    using (PRN211_BL5Context context = new PRN211_BL5Context())
-            //    {
-            //        var products = await context.Products
-            //            .Include(pr => pr.Cate)
-
-            //            .ToListAsync();
-            //        return View(products);
-            //    }
-            //}
-            using (PRN211_BL5Context context = new PRN211_BL5Context())
+            if (!isLoggedIn)
             {
-                var products = await context.Products
-                    .Include(pr => pr.Cate)
-
-                    .ToListAsync();
-                return View(products);
+                return RedirectToAction("Index", "Login");
             }
+            else
+            {
+                using (PRN211_BL5Context context = new PRN211_BL5Context())
+                {
+                    var products = await context.Products
+                        .Include(pr => pr.Cate)
+
+                        .ToListAsync();
+                    return View(products);
+                }
+            }
+
         }
 
         public ActionResult Index2(int id, int? colorId, int? sizeId)
