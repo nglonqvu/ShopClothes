@@ -19,9 +19,9 @@ namespace OnlineShop.Controllers
             return View();
         }
 
-        public IActionResult AddToCart(int productId, int colorId, int quantity)
+        public IActionResult AddToCart(int productId, int colorId, int quantity, int sizeId)
         {
-            var productdetail = _context.ProductDetails.Include(pd => pd.Product).Include(pd => pd.Color).Include(pd => pd.Thumbnail).FirstOrDefault(pd => pd.ProductId == productId&&pd.ColorId==colorId);
+            var productdetail = _context.ProductDetails.Include(pd => pd.Product).Include(pd => pd.Color).Include(pd => pd.Thumbnail).Include(pd => pd.Size).FirstOrDefault(pd => pd.ProductId == productId&&pd.ColorId==colorId&&pd.SizeId==sizeId);
             Dictionary<int, CartElement> Cart = HttpContext.Session.Get<Dictionary<int, CartElement>>("cart");
             if(Cart == null)
             {
@@ -32,7 +32,8 @@ namespace OnlineShop.Controllers
                     Color = productdetail.Color.Name,
                     Thumbnail = productdetail.Thumbnail.Thumbnail1,
                     Price = productdetail.Product.Price,
-                    Quantity = quantity     
+                    Quantity = quantity,
+                    Size = productdetail.Size.Name
                 });
             }
             else
@@ -50,6 +51,7 @@ namespace OnlineShop.Controllers
                         Thumbnail = productdetail.Thumbnail.Thumbnail1,
                         Price = productdetail.Product.Price,
                         Quantity = quantity
+                        Size = productdetail.Size.Name
                     });
                 }
             }
@@ -65,5 +67,7 @@ namespace OnlineShop.Controllers
         public decimal? Price { get; set; }
         public string Thumbnail { get; set; }
         public int Quantity { get; set; }
+
+        public string Size { get; set; }
     }
 }

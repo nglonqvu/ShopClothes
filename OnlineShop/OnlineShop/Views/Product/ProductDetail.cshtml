@@ -44,7 +44,7 @@
         </div>
         <div class="col-md-6">
             <form asp-controller="Cart" asp-action="AddToCart">
-            
+
                 <div class="p-3 right-side">
                     <div class="d-flex justify-content-between align-items-center">
                         <h3>@Model.Product.Name</h3>
@@ -55,13 +55,12 @@
                     <div class="mt-2 pr-3 content">
                         <p>@Model.Product.Description</p>
                     </div>
-                    <div style="padding-left: 15px; background-color: #ebebeb"><h4>@Model.Product.Price    ₫</h4></div>
+                    <div style="padding-left: 15px; background-color: #ebebeb"><h4>@string.Format("{0:N0}", Model.Product.Price) VNĐ</h4></div>
 
                     <div class="mt-5">
                         <span class="fw-bold">Color</span>
                         <div class="colors">
-                            <input hidden name="productId" value="@Model.Product.ProductId" />
-                            <input hidden id="colorId" name="colorId" value="@Model.ProductDetail.ColorId" />
+                            
                             <ul id="marker">
                                 @foreach (var color in Model.Colors)
                                 {
@@ -89,15 +88,17 @@
 
                         </div>
                     </div>
+                    <input hidden name="productId" value="@Model.Product.ProductId" />
+                    <input hidden id="colorId" name="colorId" value="@Model.ProductDetail.ColorId" />
+                    <input hidden id="sizeId" name="sizeId" value="@Model.ProductDetail.SizeId" />
                     <div class="buttons d-flex flex-row mt-5 gap-3">
                         <button type="submit" class="btn btn-light">Add to Cart &nbsp; <i class="fa-solid fa-cart-shopping"></i></button>
                         <button class="btn btn-dark">Buy Now</button>
                     </div>
                 </div>
-            
-        </form>
+            </form>
         </div>
-        
+
     </div>
 </div>
 
@@ -109,7 +110,7 @@
     var currentMainImageUrl = "@Model.ProductDetail.Image";
     var currentThumbnailImageUrl = thumbnailImage.src;
 
-    
+
 
     function changeImageByColor(productId, colorId) {
         selectedColorId = colorId;
@@ -145,7 +146,7 @@
         selectedSizeId = item.getAttribute("data-size-id");
     }
 
-    
+
     function changeImage(image1) {
         mainImage.src = image1;
         thumbnailImage.src = currentMainImageUrl;
@@ -170,15 +171,15 @@
     }
 
     function quantity() {
-        if (document.getElementById("quantity").value > 99) {
-            document.getElementById("quantity").value = 99
+        if (document.getElementById("quantity").value > @Model.ProductDetail.Quantity) {
+            document.getElementById("quantity").value = @Model.ProductDetail.Quantity
         }
         if (document.getElementById("quantity").value < 1) {
             document.getElementById("quantity").value = 1
         }
     }
 
-    
+
 
 </script>
 

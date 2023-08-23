@@ -77,9 +77,7 @@ namespace OnlineShop.Controllers
                             Colors = colors,
                             Sizes = sizes,
                             Thumbnails = thumbnails
-                        };
-
-                        
+                        };                   
                         return View(viewModel);
                     }
                 }
