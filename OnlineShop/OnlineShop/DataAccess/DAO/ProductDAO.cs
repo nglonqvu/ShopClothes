@@ -11,14 +11,14 @@ namespace OnlineShop.DataAccess.DAO
             {
                 using (var context = new PRN211_BL5Context())
                 {
-                    products = await context.Products.Include(p => p.Cate).OrderBy(p => p.ProductId).ToListAsync();
+                    products = await context.Products.Include(p => p.Cate).OrderByDescending(p => p.ProductId).Take(8).ToListAsync();
                     return products;
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }    
-        } 
+            }
+        }
     }
 }

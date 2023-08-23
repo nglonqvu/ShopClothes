@@ -1,0 +1,225 @@
+﻿@using X.PagedList.Mvc.Core;
+@using OnlineShop.DataAccess;
+@model ProfileModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <!-- Loader -->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Loader -->
+    <!-- Navbar STart -->
+    <!-- Navbar End -->
+    <!-- Start Hero -->
+    <section class="home-slider position-relative">
+        <div id="carouselExampleInterval" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="bg-half-170 d-table align-items-center w-100" style="background:url('/lib/images/bg/7578122.png') center center;">
+                        <div class="bg-overlay bg-overlay-dark"></div>
+                        <div class="container">
+                            <div class="row mt-5">
+                                <div class="col-lg-12">
+                                    <div class="heading-title">
+                                        <h1 class="fw-bold mb-4 text-white-50">Thời Trang Phong Cách <br> Ấn Tượng</h1>
+                                        <p class="para-desc mb-0 text-white-50">Khám phá thế giới thời trang đa dạng và đầy sáng tạo tại chỗ. Chúng tôi mang đến cho bạn những sản phẩm thời trang đẳng cấp, từ những bộ trang phục thanh lịch đến những chi tiết thời trang độc đáo, giúp bạn tỏa sáng và tự tin trong mọi dịp.</p>
+
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="bg-half-170 d-table align-items-center w-100" style="background:url('/lib/images/bg/SHA0819WHEAL_05-4ca631d702e448ba8359e82f0e581b9c.jpg') center center;">
+                        <div class="bg-overlay bg-overlay-dark"></div>
+                        <div class="container">
+                            <div class="row mt-5">
+                                <div class="col-lg-12">
+                                    <div class="heading-title">
+                                        <h1 class="fw-bold mb-4 text-white-50">Thể Thao và Phong Cách <br> Hòa Quyện Thời Gian Đầy Thú Vị</h1>
+                                        <p class="para-desc mb-0 text-white-50">Khám phá thế giới thời trang đa dạng và đầy sáng tạo tại chỗ. Chúng tôi mang đến cho bạn những sản phẩm thời trang đẳng cấp, từ những bộ trang phục thanh lịch đến những chi tiết thời trang độc đáo, giúp bạn tỏa sáng và tự tin trong mọi dịp.</p>
+
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="bg-half-170 d-table align-items-center w-100" style="background:url('/lib/images/bg/KIDS-lander-polo-2023.jpg') center center;">
+                        <div class="bg-overlay bg-overlay-dark"></div>
+                        <div class="container">
+                            <div class="row mt-5">
+                                <div class="col-lg-12">
+                                    <div class="heading-title">
+                                        <h1 class="fw-bold mb-4 text-white-50">Thời Trang Polo <br> Lịch Lãm và Thể Thao</h1>
+                                        <p class="para-desc mb-0 text-white-50">Khám phá thế giới thời trang đa dạng và đầy sáng tạo tại chỗ. Chúng tôi mang đến cho bạn những sản phẩm thời trang đẳng cấp, từ những bộ trang phục thanh lịch đến những chi tiết thời trang độc đáo, giúp bạn tỏa sáng và tự tin trong mọi dịp.</p>
+
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+        </div>
+    </section><!--end section-->
+    <!-- End Hero -->
+    <!-- Start -->
+    <section class="section">
+        <!-- Start Most Viewed Products -->
+        <div class="container">
+
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 col-md-4">
+                    <h5 class="mb-0">Tổng hợp sản phẩm</h5>
+                </div><!--end col-->
+
+                <div class="col-xl-8 col-lg-6 col-md-8 mt-4 mt-md-0">
+                    <div class="justify-content-md-end">
+                        <form asp-controller="Product" asp-action="ProductList" method="get">
+                            <div class="row justify-content-between align-items-center">
+                                <div class="col-sm-12 col-md-4">
+                                    <label style="font-weight:700;">Tên sản phẩm</label>
+                                    <div class="mb-0 position-relative">
+                                        <input type="text" class="form-control" name="searchName" value="@ViewBag.SearchName" />
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-sm-12 col-md-3">
+                                    <label style="font-weight:700;">Danh mục</label>
+                                    <div class="mb-0 position-relative">
+                                        @Html.DropDownList("searchCategory", (SelectList)ViewBag.CategoryList, "Tất cả", new { @class = "form-control" })
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-sm-12 col-md-2 mt-4 mt-sm-0">
+                                    <div class="mb-0 position-relative">
+                                        <label style="font-weight:700;">Loại giá</label>
+                                        @Html.DropDownList("priceOrder", (IEnumerable<SelectListItem>)ViewBag.PriceOrderList, new { @class = "form-control" })
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-sm-12 col-md-3 mt-4 mt-sm-0">
+                                    <div class="mb-0 position-relative" style="padding-top:17px">
+                                        <button type="submit" class="btn btn-info">Tìm kiếm</button>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </form><!--end form-->
+                    </div>
+                </div><!--end col-->
+            </div><!--end row-->
+
+            <div class="row">
+                @foreach (var product in ViewBag.products)
+                {
+                    <div class="col-lg-3 col-md-6 col-12 mt-4 pt-2">
+                        <div class="card shop-list border-0">
+                            <ul class="label list-unstyled mb-0">
+                                <li><a href="javascript:void(0)" class="badge badge-pill badge-success">Featured</a></li>
+                            </ul>
+                            <div class="shop-image position-relative overflow-hidden rounded shadow">
+                                <a href="@product.Image"><img style="width:291px;height:380px" src="@product.Image" class="img-fluid" alt=""></a>
+                                <ul class="list-unstyled shop-icons">
+                                    <li class="mt-2"><a href="/Product/ProductDetail?productId=@product.ProductId" class="btn btn-icon btn-pills btn-soft-primary"><i data-feather="eye" class="icons"></i></a></li>
+                                    <li class="mt-2"><a href="/Cart/AddToCart" class="btn btn-icon btn-pills btn-soft-warning"><i data-feather="shopping-cart" class="icons"></i></a></li>
+                                </ul>
+
+                                <div class="qty-icons">
+                                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-pills btn-icon btn-primary minus">-</button>
+                                    <input min="0" name="quantity" value="0" type="number" class="btn btn-pills btn-icon btn-primary qty-btn quantity">
+                                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-pills btn-icon btn-primary plus">+</button>
+                                </div>
+                            </div>
+                            <div class="card-body content pt-4 p-2">
+                                <a href="pharmacy-product-detail.html" class="text-dark product-name h6">@product.Name</a>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <h6 class="text-muted small font-italic mb-0 mt-1">@string.Format("{0:N0}", product.Price) VNĐ </h6>
+                                    <ul class="list-unstyled text-warning mb-0">
+                                        <li class="list-inline-item"><i data-feather="star" class="fea icon-sm"> </i></li>
+                                        <li class="list-inline-item"><i data-feather="star" class="fea icon-sm"> </i></li>
+                                        <li class="list-inline-item"><i data-feather="star" class="fea icon-sm"> </i></li>
+                                        <li class="list-inline-item"><i data-feather="star" class="fea icon-sm"> </i></li>
+                                        <li class="list-inline-item"><i data-feather="star" class="fea icon-sm"> </i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-->
+                }
+            </div><!--end row-->
+            <br><br><br>
+            <div class="row text-center mt-2 mb-3">
+                <div class="col-12">
+                    <ul class="pagination justify-content-center mb-0 list-unstyled">
+                        @if (ViewBag.products.PageCount > 1)
+                        {
+                            @if (ViewBag.products.PageNumber > 1)
+                            {
+                                <li class="page-item"><a class="page-link" href="@Url.Action("ProductList", new { page = ViewBag.products.PageNumber - 1, searchName = ViewBag.SearchName, searchCategory = ViewBag.SearchCategory, searchPrice = ViewBag.SearchPrice })" aria-label="Previous"> Trang trước</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"> Trang trước</a></li>
+                            }
+
+                            @for (int i = 1; i <= ViewBag.products.PageCount; i++)
+                            {
+                                if (i == ViewBag.products.PageNumber)
+                                {
+                                    <li class="page-item active"><a class="page-link" href="#">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li class="page-item"><a class="page-link" href="@Url.Action("ProductList", new { page = i, searchName = ViewBag.SearchName, searchCategory = ViewBag.SearchCategory, searchPrice = ViewBag.SearchPrice })">@i</a></li>
+                                }
+                            }
+
+                            @if (ViewBag.products.PageNumber < ViewBag.products.PageCount)
+                            {
+                                <li class="page-item"><a class="page-link" href="@Url.Action("ProductList", new { page = ViewBag.products.PageNumber + 1, searchName = ViewBag.SearchName, searchCategory = ViewBag.SearchCategory, searchPrice = ViewBag.SearchPrice })" aria-label="Next">Trang sau</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled"><a class="page-link" href="#" aria-label="Next">Trang sau</a></li>
+                            }
+                        }
+                    </ul><!--end pagination-->
+                </div><!--end col-->
+            </div>
+        </div><!--end container-->
+    </section>
+    <!-- Start -->
+    <!-- End -->
+    <!-- Back to top -->
+    <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-info back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <!-- SLIDER -->
+    <script src="/js/tiny-slider.js"></script>
+    <script src="/js/tiny-slider-init.js"></script>
+    <!-- Icons -->
+    <script src="/js/feather.min.js"></script>
+    <!-- Main Js -->
+    <script src="/js/app.js"></script>
+</body>
+</html>
