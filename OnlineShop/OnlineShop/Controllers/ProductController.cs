@@ -15,14 +15,32 @@ namespace OnlineShop.Controllers
             db = _db;
         }
 
-
-        public IActionResult ProductDetail(int productId)
-        {
+        public async Task<IActionResult> ProductDetail(int productId)
+        {                    
+            User user = await GetCurrentLoggedInUser();
+                bool isLoggedIn = (user != null);
+                ViewBag.IsLoggedIn = isLoggedIn;
+                if (isLoggedIn)
+                {
+                    ProfileModel model = new ProfileModel
+                    {
+                        FullName = user.FullName,
+                        Email = user.Email,
+                        Avatar = user.Avatar,
+                        Address = user.Address,
+                        Birthday = user.Dob,
+                        Gender = user.Gender,
+                        PhoneNumber = user.Phone,
+                        RoleName = user.RoleNavigation?.RoleName
+                    };
+                    /*return View(model);*/
+                }
+                /*return View();*/
             try
             {
                 
                 var product = db.Products.FirstOrDefault(p => p.ProductId == productId);
-                var firstColorId = db.ProductDetails.Where(e => e.ProductId == productId).FirstOrDefault()?.ColorId;
+                var firstColorId = db.ProductDetails.FirstOrDefault()?.ColorId;
                 var productDetail = db.ProductDetails.FirstOrDefault(p => p.ProductId == productId && p.ColorId == firstColorId);
                 if (productDetail == null)
                 {
@@ -89,7 +107,8 @@ namespace OnlineShop.Controllers
                 var result = new
                 {
                     MainImageUrl = newImageUrl,
-                    ThumbnailImageUrl = newThumbnailImageUrl
+                    ThumbnailImageUrl = newThumbnailImageUrl,
+                    colorId = colorId
                 };
                 return Json(result);
             }

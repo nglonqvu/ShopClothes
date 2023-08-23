@@ -1,7 +1,4 @@
 ﻿@model ProductDetailModel
-@{
-    Layout = null;
-}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -22,8 +19,9 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link rel="stylesheet" href="~/css/ProductDetail.css" />
     <link rel="" href="~/js/ProductDetail.js" />
+    <script src="https://kit.fontawesome.com/5a5f994da7.js" crossorigin="anonymous"></script>
 </head>
-<div class="card">
+<div class="card container">
     <div class="row g-0">
         <div class="col-md-6 border-end">
             <div class="d-flex flex-column justify-content-center">
@@ -42,45 +40,64 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="p-3 right-side">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h3>@Model.Product.Name</h3>
-                    <span class="heart">
-                        <i class='bx bx-heart'></i>
-                    </span>
-                </div>
-                <div class="mt-2 pr-3 content">
-                    <p>@Model.Product.Description</p>
-                </div>
-                <h3>@Model.Product.Price    ₫</h3>
-                <div class="mt-5">
-                    <span class="fw-bold">Color</span>
-                    <div class="colors">
-                        <ul id="marker">
-                            @foreach (var color in Model.Colors)
-                            {
-                                <li style="background-color: @color.Name" onclick="changeImageByColor(@(Model.Product.ProductId), '@(color.Id)')"></li>
-                            }
-                        </ul>
+            <form asp-controller="Cart" asp-action="AddToCart">
+            
+                <div class="p-3 right-side">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3>@Model.Product.Name</h3>
+                        <span class="heart">
+                            <i class='bx bx-heart'></i>
+                        </span>
                     </div>
-                    <span class="fw-bold">Size</span>
-                    <div class="size">
-                        <ul id="marker">
-                            @foreach (var size in Model.Sizes)
-                            {
-                                <li class="size-item" data-size-id="@size.SizeId" onclick="highlightAndGetValue(this)">@size.Name</li>
-                            }
-                        </ul>
+                    <div class="mt-2 pr-3 content">
+                        <p>@Model.Product.Description</p>
+                    </div>
+                    <div style="padding-left: 15px; background-color: #ebebeb"><h4>@Model.Product.Price    ₫</h4></div>
+
+                    <div class="mt-5">
+                        <span class="fw-bold">Color</span>
+                        <div class="colors">
+                            <input hidden name="productId" value="@Model.Product.ProductId" />
+                            <input hidden id="colorId" name="colorId" value="@Model.ProductDetail.ColorId" />
+                            <ul id="marker">
+                                @foreach (var color in Model.Colors)
+                                {
+                                    <li style="background-color: @color.Name" onclick="changeImageByColor(@(Model.Product.ProductId), '@(color.Id)')"></li>
+                                }
+                            </ul>
+                        </div>
+                        <span class="fw-bold">Size</span>
+                        <div class="size">
+                            <ul id="marker">
+                                @foreach (var size in Model.Sizes)
+                                {
+                                    <li class="size-item" data-size-id="@size.SizeId" onclick="highlightAndGetValue(this)">@size.Name</li>
+                                }
+                            </ul>
+                        </div>
+                        <span class="fw-bold">Quantity</span>
+                        <div class="size" style="display: flex">
+
+
+                            <div onclick="increase()" class="size-item" style="align-self: center; text-align: center; border: 1px solid #ebebeb; padding: 15px; margin-right:10px"><i class="fa-solid fa-plus"></i></div>
+                            <div class="size-item" style="align-self: center; text-align: center; height: 150%;"><input onchange="quantity()" id="quantity" name="quantity" value="1" type="number" min="0" max="99" /></div>
+                            <div onclick="decrease()" class="size-item" style="align-self: center; text-align: center; border: 1px solid #ebebeb; padding: 15px; margin-left:10px"><i class="fa-solid fa-minus"></i></div>
+
+
+                        </div>
+                    </div>
+                    <div class="buttons d-flex flex-row mt-5 gap-3">
+                        <button type="submit" class="btn btn-light">Add to Cart &nbsp; <i class="fa-solid fa-cart-shopping"></i></button>
+                        <button class="btn btn-dark">Buy Now</button>
                     </div>
                 </div>
-                <div class="buttons d-flex flex-row mt-5 gap-3">
-                    <button class="btn btn-dark">Add to Cart</button>
-                </div>
-            </div>
+            
+        </form>
         </div>
+        
     </div>
 </div>
-</html>
+
 <script>
     var selectedColorId = null;
     var selectedSizeId = null;
@@ -88,6 +105,9 @@
     var thumbnailImage = document.getElementById("thumbnail_image");
     var currentMainImageUrl = "@Model.ProductDetail.Image";
     var currentThumbnailImageUrl = thumbnailImage.src;
+
+    
+
     function changeImageByColor(productId, colorId) {
         selectedColorId = colorId;
         $.ajax({
@@ -102,6 +122,8 @@
                 var thumbnailImage = document.getElementById('thumbnail_image');
                 thumbnailImage.src = response.thumbnailImageUrl;
                 currentThumbnailImageUrl = response.thumbnailImageUrl;
+
+                document.getElementById('colorId').value = response.colorId;
             }
         });
     }
@@ -120,7 +142,7 @@
         selectedSizeId = item.getAttribute("data-size-id");
     }
 
-    console.log(currentMainImageUrl + " " + currentThumbnailImageUrl);
+    
     function changeImage(image1) {
         mainImage.src = image1;
         thumbnailImage.src = currentMainImageUrl;
@@ -129,6 +151,33 @@
         var tempImageUrl = currentMainImageUrl;
         currentMainImageUrl = currentThumbnailImageUrl;
         currentThumbnailImageUrl = tempImageUrl;
+        console.log(currentMainImageUrl + " " + currentThumbnailImageUrl);
     }
 
+    function increase() {
+        console.log("in");
+        document.getElementById("quantity").value -= -1
+        quantity()
+    }
+
+    function decrease() {
+        console.log("de");
+        document.getElementById("quantity").value -= 1
+        quantity()
+    }
+
+    function quantity() {
+        if (document.getElementById("quantity").value > 99) {
+            document.getElementById("quantity").value = 99
+        }
+        if (document.getElementById("quantity").value < 1) {
+            document.getElementById("quantity").value = 1
+        }
+    }
+
+    
+
 </script>
+
+</html>
+
