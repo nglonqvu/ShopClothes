@@ -9,5 +9,6 @@ namespace OnlineShop.Models
         public List<Color> Colors { get; set; }
         public List<Size> Sizes { get; set; }
         public List<Thumbnail> Thumbnails { get; set; }
+        public ProfileModel Profile { get; internal set; }
     }
 }
