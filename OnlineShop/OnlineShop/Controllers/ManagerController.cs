@@ -20,10 +20,12 @@ namespace OnlineShop.Controllers
         }
         public async Task<IActionResult> Index()
         {
+
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
-            if (!isLoggedIn )
+            int? userRole = user?.Role;
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -45,7 +47,8 @@ namespace OnlineShop.Controllers
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
-            if (!isLoggedIn)
+            int? userRole = user?.Role;
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -110,7 +113,8 @@ namespace OnlineShop.Controllers
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
-            if (!isLoggedIn)
+            int? userRole = user?.Role;
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -137,7 +141,8 @@ namespace OnlineShop.Controllers
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
-            if (!isLoggedIn)
+            int? userRole = user?.Role;
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -161,7 +166,8 @@ namespace OnlineShop.Controllers
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
-            if (!isLoggedIn)
+            int? userRole = user?.Role;
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -190,7 +196,6 @@ namespace OnlineShop.Controllers
             }
         }
 
-        // POST: ProductManager/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create2(ProductDetail prdetail, string thumbnailName)
@@ -198,7 +203,8 @@ namespace OnlineShop.Controllers
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
-            if (!isLoggedIn)
+            int? userRole = user?.Role;
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -242,7 +248,8 @@ namespace OnlineShop.Controllers
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
-            if (!isLoggedIn)
+            int? userRole = user?.Role;
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -272,7 +279,8 @@ namespace OnlineShop.Controllers
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
-            if (!isLoggedIn)
+            int? userRole = user?.Role;
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -295,10 +303,7 @@ namespace OnlineShop.Controllers
                     existingProduct.Image = product.Image;
                     existingProduct.Description = product.Description;
                     existingProduct.Status = product.Status;
-
-
-
-                    context.SaveChanges(); // Save changes to update the product
+                    context.SaveChanges(); 
                 }
 
                 return RedirectToAction("Index", "Manager");

@@ -26,7 +26,7 @@ namespace OnlineShop.Controllers
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
 
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 3))
+            if (!isLoggedIn || (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3)))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -59,7 +59,7 @@ namespace OnlineShop.Controllers
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
 
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 3))
+            if (!isLoggedIn || (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3)))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -95,7 +95,7 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 3))
+            if (!isLoggedIn || (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3)))
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -126,7 +126,7 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 3))
+            if (!isLoggedIn || (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3)))
             {
                 return RedirectToAction("Index", "Login");
             }
