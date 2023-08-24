@@ -14,17 +14,15 @@ namespace OnlineShop.Controllers
 
         // GET: ManagerUserController
         private readonly UserDAO _userDAO;
-       
+
         public ManagerUserController(IWebHostEnvironment webHostEnvironment)
         {
-            
             _userDAO = new UserDAO();
-            
         }
         public async Task<ActionResult> Index()
         {
             User user = await GetCurrentLoggedInUser();
-            bool isLoggedIn = (user != null);     
+            bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
 
@@ -53,73 +51,87 @@ namespace OnlineShop.Controllers
             return null;
         }
         // GET: ManagerUserController/Details/5
+
         public async Task<ActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            using (PRN211_BL5Context context = new PRN211_BL5Context())
-            {
-                var user = await context.Users
-                .Include(users => users.RoleNavigation)
-                .FirstOrDefaultAsync(u => u.UserId == id);
+            User user = await GetCurrentLoggedInUser();
+            bool isLoggedIn = (user != null);
+            ViewBag.IsLoggedIn = isLoggedIn;
+            int? userRole = user?.Role;
 
-                if (user == null)
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 3))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                if (id == null)
                 {
                     return NotFound();
                 }
+                using (PRN211_BL5Context context = new PRN211_BL5Context())
+                {
+                    var users = await context.Users
+                    .Include(users => users.RoleNavigation)
+                    .FirstOrDefaultAsync(u => u.UserId == id);
 
-                return View(user);
+                    if (user == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(users);
+                }
             }
         }
 
-        
-        // GET: ManagerUserController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: ManagerUserController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+
 
         [HttpGet]
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            using (var context = new PRN211_BL5Context())
+            User user = await GetCurrentLoggedInUser();
+            bool isLoggedIn = (user != null);
+            ViewBag.IsLoggedIn = isLoggedIn;
+            int? userRole = user?.Role;
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 3))
             {
-                var item = context.Users.FirstOrDefault(i => i.UserId == id);
-
-                if (item == null)
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                using (var context = new PRN211_BL5Context())
                 {
-                    return NotFound();
+                    var item = context.Users.FirstOrDefault(i => i.UserId == id);
+
+                    if (item == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var roles = context.Roles.ToList();
+                    ViewBag.Role = new SelectList(roles, "RoleId", "RoleName");
+
+                    return View(item);
                 }
-
-                var roles = context.Roles.ToList();
-                ViewBag.Role = new SelectList(roles, "RoleId", "RoleName"); 
-
-                return View(item);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(User updatedItem , int id )
+        public async Task<ActionResult> Edit(User updatedItem, int id)
         {
-            
+            User user = await GetCurrentLoggedInUser();
+            bool isLoggedIn = (user != null);
+            ViewBag.IsLoggedIn = isLoggedIn;
+            int? userRole = user?.Role;
+            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 3))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
                 using (var context = new PRN211_BL5Context())
                 {
                     var existingItem = context.Users.FirstOrDefault(i => i.UserId == id);
@@ -128,16 +140,13 @@ namespace OnlineShop.Controllers
                     {
                         return NotFound();
                     }
-                    
+
                     existingItem.Role = updatedItem.Role;
 
                     context.SaveChanges();
-                    return RedirectToAction("Index" , "ManagerUser");
+                    return RedirectToAction("Index", "ManagerUser");
                 }
-            
-
-            // Nếu ModelState không hợp lệ, hiển thị lại form với thông tin đã nhập
-            return View(updatedItem);
+            }
         }
 
 
@@ -166,8 +175,5 @@ namespace OnlineShop.Controllers
                 return View();
             }
         }
-
-        // POST: ManagerUserController/Delete/5
-        
     }
 }
