@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.DataAccess;
 using OnlineShop.DataAccess.DAO;
-using OnlineShop.Extentions;
 using OnlineShop.Models;
 using System.Drawing;
 
