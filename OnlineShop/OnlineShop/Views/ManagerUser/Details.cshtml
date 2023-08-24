@@ -44,7 +44,17 @@
                         }
                     </dd>
                     <dt class="col-sm-4 text-right">Ngày sinh:</dt>
-                    <dd class="col-sm-8">@Model.Dob.Value.ToString("dd/MM/yyyy")</dd>
+                    <dd class="col-sm-8">
+                        @if (Model.Dob.HasValue)
+                        {
+                            @Model.Dob.Value.ToString("dd/MM/yyyy")
+                        }
+                        else
+                        {
+                            <text>Không có dữ liệu</text>
+                        }
+                    </dd>
+                   
 
                     <dt class="col-sm-4 text-right">Địa chỉ:</dt>
                     <dd class="col-sm-8">@Html.DisplayFor(model => model.Address)</dd>
