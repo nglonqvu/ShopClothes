@@ -101,7 +101,7 @@ namespace OnlineShop.Controllers
                             Color = productDetail.Color.Name,
                             Thumbnail = productDetail.Thumbnail.Thumbnail1,
                             Price = productDetail.Product.Price,
-                            Quantity = quantity + (int)cartItem.Quantity,
+                            Quantity = (int)cartItem.Quantity,
                             Size = productDetail.Size.Name
                         };
 
