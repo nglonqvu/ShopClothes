@@ -90,8 +90,8 @@
                         </div>
                     </div>
                     <input hidden name="productId" value="@ViewBag.ProductDetail.Product.ProductId" />
-                    <input hidden id="colorId" name="colorId" value="@ViewBag.ProductDetail.ProductDetail.ColorId" />
-                    <input hidden id="sizeId" name="sizeId" value="@ViewBag.ProductDetail.ProductDetail.SizeId" />
+                    <input hidden id="colorId" name="colorId"/>
+                    <input hidden id="sizeId" name="sizeId"/>
                     <div class="buttons d-flex flex-row mt-5 gap-3">
                         <button type="submit" class="btn btn-light" id="addToCartBtn">Add to Cart &nbsp; <i class="fa-solid fa-cart-shopping"></i></button>
                     </div>
@@ -132,6 +132,13 @@
             }
         });
     }
+    
+    var firstSizeItem = document.querySelector(".size-item");
+    if (firstSizeItem) {
+        highlightAndGetValue(firstSizeItem);
+        selectedSizeId = selectedSizeId;
+    }
+
     function highlightAndGetValue(item) {
 
         var sizeItems = document.querySelectorAll(".size-item");
@@ -151,12 +158,9 @@
         else {
             document.getElementById("quantity").value = 1;
         }
+        document.getElementById("sizeId").value = selectedSizeId;
     }
-    var firstSizeItem = document.querySelector(".size-item");
-    if (firstSizeItem) {
-        highlightAndGetValue(firstSizeItem);
-        selectedSizeId = selectedSizeId;
-    }
+    
 
     function updateQuantity(productId, colorId, sizeId) {
         $.ajax({
@@ -244,6 +248,8 @@
             document.getElementById("quantity").value = 0
         }
     }
+
+    document.getElementById("colorId").value = selectedColorId;
 </script>
 
 </html>
