@@ -88,11 +88,13 @@
     </style>
 </head>
 <div class="container">
-    <h1 class="text-center">Product Detail</h1>
+    <h1 class="text-center">
+        chi tiết sản phẩm
+    </h1>
 
     <form method="get" class="form-inline mb-3">
         <div class="form-group mr-2">
-            <label for="color" class="mr-2">Filter by Color:</label>
+            <label for="color" class="mr-2">Lọc theo màu:</label>
             <select id="color" name="colorId" class="form-control">
                 <option value="">All Colors</option>
                 @foreach (var color in ViewData["Colors"] as List<OnlineShop.DataAccess.Color>)
@@ -102,7 +104,7 @@
             </select>
         </div>
         <div class="form-group mr-2">
-            <label for="size" class="mr-2">Filter by Size:</label>
+            <label for="size" class="mr-2">Lọc theo size:</label>
             <select id="size" name="sizeId" class="form-control">
                 <option value="">All Sizes</option>
                 @foreach (var size in ViewData["Sizes"] as List<OnlineShop.DataAccess.Size>)
@@ -115,18 +117,18 @@
     </form>
 
     <p class="text-right">
-        <a class="btn btn-success" asp-action="Create2">Create New</a>
+        <a class="btn btn-success" asp-action="Create2">Tạo mới </a>
     </p>
 
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th>Image</th>
-                <th>Quantity</th>
-                <th>Color</th>
-                <th>Size</th>
+                <th>Ảnh</th>
+                <th>Số lượng</th>
+                <th>Màu</th>
+                <th>Kích cỡ</th>
                 <th>Thumbnail</th>
-                <th>Actions</th>
+                <th>Hành động</th>
             </tr>
         </thead>
         <tbody>

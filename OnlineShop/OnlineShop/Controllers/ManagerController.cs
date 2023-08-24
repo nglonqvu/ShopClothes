@@ -25,9 +25,12 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
+            if (!isLoggedIn /*|| (userRole.HasValue && userRole.Value == 2)*/)
             {
                 return RedirectToAction("Index", "Login");
+            }else if (userRole.HasValue && userRole.Value == 2) 
+            {
+                return RedirectToAction("Index" , "NotFound");
             }
             else
             {
@@ -48,14 +51,16 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
             }
+            else if (userRole.HasValue && userRole.Value == 2)
+            {
+                return RedirectToAction("Index", "NotFound");
+            }
             else
             {
-
-
                 using (PRN211_BL5Context context = new PRN211_BL5Context())
                 {
                     var product = context.Products
@@ -66,7 +71,6 @@ namespace OnlineShop.Controllers
                         .Include(p => p.ProductDetails)
                             .ThenInclude(pd => pd.Thumbnail)
                         .FirstOrDefault(p => p.ProductId == id);
-
                     if (product == null)
                     {
                         return NotFound();
@@ -104,31 +108,27 @@ namespace OnlineShop.Controllers
             }
             return null;
         }
-
-
-
-        // GET: ManagerController/Create
         public async Task<ActionResult> Create()
         {
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
             }
+            else if (userRole.HasValue && userRole.Value == 2)
+            {
+                return RedirectToAction("Index", "NotFound");
+            }
             else
             {
-
-
                 using (PRN211_BL5Context context = new PRN211_BL5Context())
                 {
                     var categories = context.Categories.ToList();
                     ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
-
                 }
-
                 return View();
             }
         }
@@ -142,14 +142,16 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
             }
+            else if (userRole.HasValue && userRole.Value == 2)
+            {
+                return RedirectToAction("Index", "NotFound"); 
+            }
             else
             {
-
-
                 using (PRN211_BL5Context context = new PRN211_BL5Context())
                 {
                     context.Products.Add(product);
@@ -157,8 +159,6 @@ namespace OnlineShop.Controllers
                 }
                 return RedirectToAction("Index", "Manager");
             }
-           
-           
         }
 
         public async Task<ActionResult> Create2()
@@ -167,9 +167,13 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
+            }
+            else if (userRole.HasValue && userRole.Value == 2)
+            {
+                return RedirectToAction("Index", "NotFound");
             }
             else
             {
@@ -204,9 +208,13 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
+            }
+            else if (userRole.HasValue && userRole.Value == 2)
+            {
+                return RedirectToAction("Index", "NotFound");
             }
             else
             {
@@ -249,9 +257,13 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
+            }
+            else if (userRole.HasValue && userRole.Value == 2)
+            {
+                return RedirectToAction("Index", "NotFound");
             }
             else
             {
@@ -280,13 +292,16 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && userRole.Value == 2))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
             }
+            else if (userRole.HasValue && userRole.Value == 2)
+            {
+                return RedirectToAction("Index", "NotFound");
+            }
             else
             {
-
                 using (PRN211_BL5Context context = new PRN211_BL5Context())
                 {
                     var existingProduct = context.Products.FirstOrDefault(p => p.ProductId == id);
@@ -295,7 +310,6 @@ namespace OnlineShop.Controllers
                     {
                         return NotFound();
                     }
-
                     // Update existing product properties
                     existingProduct.Name = product.Name;
                     existingProduct.CateId = product.CateId;
@@ -305,9 +319,7 @@ namespace OnlineShop.Controllers
                     existingProduct.Status = product.Status;
                     context.SaveChanges(); 
                 }
-
                 return RedirectToAction("Index", "Manager");
-
             }
             
         }
@@ -353,7 +365,6 @@ namespace OnlineShop.Controllers
                     context.ProductDetails.Remove(pdetail);
                     context.SaveChanges();
                 }
-
                 return RedirectToAction("Index" , "Manager" );
             }
             catch

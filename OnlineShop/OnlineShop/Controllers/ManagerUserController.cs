@@ -26,9 +26,13 @@ namespace OnlineShop.Controllers
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
 
-            if (!isLoggedIn || (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3)))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
+            }
+            else if (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3))
+            {
+                return RedirectToAction("Index", "NotFound");
             }
             else
             {
@@ -59,9 +63,13 @@ namespace OnlineShop.Controllers
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
 
-            if (!isLoggedIn || (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3)))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
+            }
+            else if (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3))
+            {
+                return RedirectToAction("Index", "NotFound");
             }
             else
             {
@@ -84,10 +92,6 @@ namespace OnlineShop.Controllers
                 }
             }
         }
-
-
-
-
         [HttpGet]
         public async Task<ActionResult> Edit(int id)
         {
@@ -95,9 +99,13 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3)))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
+            }
+            else if (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3))
+            {
+                return RedirectToAction("Index", "NotFound");
             }
             else
             {
@@ -126,9 +134,13 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn || (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3)))
+            if (!isLoggedIn )
             {
                 return RedirectToAction("Index", "Login");
+            }
+            else if (userRole.HasValue && (userRole.Value == 2 || userRole.Value == 3))
+            {
+                return RedirectToAction("Index", "NotFound");
             }
             else
             {
