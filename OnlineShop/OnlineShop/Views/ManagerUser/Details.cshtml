@@ -1,0 +1,92 @@
+﻿@model OnlineShop.DataAccess.User
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <!-- Include Bootstrap CSS and Font Awesome Icons (if not already included) -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Thông tin người dùng </h1>
+        <hr />
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4 text-right">Email:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+
+                    <dt class="col-sm-4 text-right">Tên:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FullName)</dd>
+
+                    <dt class="col-sm-4 text-right">Số điện thoại:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Phone)</dd>
+
+                    <dt class="col-sm-4 text-right">Giới tính:</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.Gender ==true)
+                        { 
+                            <span class="male"><i class="fas fa-mars"></i> Nam</span>
+                        }
+                        else
+                        {
+                            <span class="female"><i class="fas fa-venus"></i> Nữ</span>
+                        }
+                    </dd>
+                    <dt class="col-sm-4 text-right">Ngày sinh:</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.Dob.HasValue)
+                        {
+                            @Model.Dob.Value.ToString("dd/MM/yyyy")
+                        }
+                        else
+                        {
+                            <text>Không có dữ liệu</text>
+                        }
+                    </dd>
+                   
+
+                    <dt class="col-sm-4 text-right">Địa chỉ:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Address)</dd>
+
+                    <dt class="col-sm-4 text-right">Trạng thái :</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.Status==true)
+                        {
+                            <span class="text-success"><i class="fas fa-check-circle"></i> Active</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger"><i class="fas fa-times-circle"></i> Inactive</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4 text-right">Vai trò:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.RoleNavigation.RoleName)</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.UserId">Sửa vai trò</a>
+                <a class="btn btn-info" asp-action="Index">Trở về</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
