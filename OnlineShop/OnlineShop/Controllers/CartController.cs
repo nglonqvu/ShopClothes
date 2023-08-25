@@ -270,28 +270,88 @@ namespace OnlineShop.Controllers
             return View("Index", model);
         }
 
-            private async Task<User> GetCurrentLoggedInUser()
+        private async Task<User> GetCurrentLoggedInUser()
+        {
+            string email = HttpContext.Session.GetString("Email");
+            if (!string.IsNullOrEmpty(email))
             {
-                string email = HttpContext.Session.GetString("Email");
-                if (!string.IsNullOrEmpty(email))
-                {
-                    return await userDAO.GetUser(email);
-                }
-                return null;
+                return await userDAO.GetUser(email);
             }
+            return null;
+        }
+        public IActionResult Checkout(int? id)
+        {
+            User uid = _context.Users.Where(x => x.UserId == id).FirstOrDefault();
+            if (uid != null)
+            {
+                ViewBag.id = uid.UserId;
+                ViewBag.name = uid.FullName;
+                ViewBag.phone = uid.Phone;
+                ViewBag.add = uid.Address;
+            }
+
+            return View();
         }
 
-
-
-        public class CartElement
+        [HttpPost]
+        public IActionResult Checkout()
         {
-            public int ProductDetailId { get; set; }
-            public string ProductName { get; set; }
-            public string Color { get; set; }
-            public decimal? Price { get; set; }
-            public string Thumbnail { get; set; }
-            public int Quantity { get; set; }
 
-            public string Size { get; set; }
+            string uid = HttpContext.Session.GetString("id");
+            string sum1 = HttpContext.Request.Form["sum"];
+            Order order = new Order();
+            order.UserId = int.Parse(uid);
+            order.OrderDate = DateTime.Now;
+            order.Status = 1;
+            decimal sumDecimal = decimal.Parse(sum1);
+            int sumAsInt = (int)sumDecimal;
+            order.Total = sumAsInt;
+            _context.Add(order);
+            _context.SaveChanges();
+            Dictionary<int, CartElement> cid = HttpContext.Session.Get<Dictionary<int, CartElement>>("cart");
+            var oid = _context.Orders.AsQueryable().OrderByDescending(o => o.OrderId).FirstOrDefault()?.OrderId;
+            if (oid != null && oid != 0)
+            {
+                foreach (KeyValuePair<int, CartElement> i in cid)
+                {
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.OrderId = oid;
+                    orderDetail.ProductDetailId = i.Key;
+                    orderDetail.Quantity = i.Value.Quantity;
+                    orderDetail.Total = (int)i.Value.Price;
+                    ProductDetail product = _context.ProductDetails.Where(x => x.ProductDetailId == i.Key).FirstOrDefault();
+                    product.Quantity -= i.Value.Quantity;
+                    _context.OrderDetails.Add(orderDetail);
+                    _context.ProductDetails.Update(product);
+                    _context.SaveChanges();
+                }
+            }
+
+
+            IDictionary<int, CartElement> cart = new Dictionary<int, CartElement>();
+
+
+            // sau khi thanh toan xong can xoa het cac sp trong cart
+            cart = new Dictionary<int, CartElement>();
+            string json = System.Text.Json.JsonSerializer.Serialize(cart);
+            HttpContext.Session.SetString("cart", json);
+
+
+            return RedirectToAction("Index");
         }
     }
+
+
+
+    public class CartElement
+    {
+        public int ProductDetailId { get; set; }
+        public string ProductName { get; set; }
+        public string Color { get; set; }
+        public decimal? Price { get; set; }
+        public string Thumbnail { get; set; }
+        public int Quantity { get; set; }
+
+        public string Size { get; set; }
+    }
+}
