@@ -132,7 +132,7 @@ namespace OnlineShop.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> UpdatePassword(ChangePasswordModel model)
+        public async Task<IActionResult> UpdatePassword(ProfileModel model)
         {
             User user = await GetCurrentLoggedInUser();
             if (user == null)
