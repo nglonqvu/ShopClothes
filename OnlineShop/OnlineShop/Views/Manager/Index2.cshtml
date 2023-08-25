@@ -152,7 +152,7 @@
                     </td>
                     <td>
                         <a class="btn btn-primary" asp-action="Edit2" asp-route-id="@item.ProductDetailId">Edit</a>
-                        <a class="btn btn-danger" asp-action="Delete2" asp-route-id="@item.ProductDetailId">Delete</a>
+                        <a class="btn btn-danger" asp-controller="Manager" asp-action="Delete2" asp-route-id="@item.ProductDetailId">Delete</a>
                     </td>
                 </tr>
             }

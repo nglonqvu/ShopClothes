@@ -163,29 +163,6 @@ namespace OnlineShop.Controllers
 
 
         // GET: ManagerUserController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            try
-            {
-                using (PRN211_BL5Context context = new PRN211_BL5Context())
-                {
-                    var user = context.Users.FirstOrDefault(p => p.UserId == id);
-
-                    if (user == null)
-                    {
-                        return NotFound();
-                    }
-
-                    context.Users.Remove(user);
-                    context.SaveChanges();
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+       
     }
 }
