@@ -12,10 +12,10 @@ namespace OnlineShop.Controllers
     public class ManagerController : Controller
     {
         private readonly UserDAO _userDAO;
-       
+
         public ManagerController(IWebHostEnvironment webHostEnvironment)
         {
-           
+
             _userDAO = new UserDAO();
         }
         public async Task<IActionResult> Index()
@@ -28,9 +28,10 @@ namespace OnlineShop.Controllers
             if (!isLoggedIn /*|| (userRole.HasValue && userRole.Value == 2)*/)
             {
                 return RedirectToAction("Index", "Login");
-            }else if (userRole.HasValue && userRole.Value == 2) 
+            }
+            else if (userRole.HasValue && userRole.Value == 2)
             {
-                return RedirectToAction("Index" , "NotFound");
+                return RedirectToAction("Index", "NotFound");
             }
             else
             {
@@ -45,13 +46,13 @@ namespace OnlineShop.Controllers
 
         }
 
-        public async Task<ActionResult> Index2(int id, string newColor, string newSize)
+        public async Task<ActionResult> Index2(int id, string newColor, string newSize, string newThumbnail)
         {
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn )
+            if (!isLoggedIn)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -80,15 +81,33 @@ namespace OnlineShop.Controllers
 
                     if (!string.IsNullOrEmpty(newColor))
                     {
-                        Color colorToAdd = new Color { Name = newColor };
+                        Color colorToAdd = new Color
+                        {
+                            Name = newColor,
+                            ProductId = product.ProductId,
+                        };
                         context.Colors.Add(colorToAdd);
                         await context.SaveChangesAsync();
                     }
 
                     if (!string.IsNullOrEmpty(newSize))
                     {
-                        Size sizeToAdd = new Size { Name = newSize };
+                        Size sizeToAdd = new Size
+                        {
+                            Name = newSize,
+                            ProductId = product.ProductId,
+                        };
                         context.Sizes.Add(sizeToAdd);
+                        await context.SaveChangesAsync();
+                    }
+
+                    if (!string.IsNullOrEmpty(newThumbnail))
+                    {
+                        Thumbnail ThumbnailToAdd = new Thumbnail
+                        {
+                            Thumbnail1 = newThumbnail
+                        };
+                        context.Thumbnails.Add(ThumbnailToAdd);
                         await context.SaveChangesAsync();
                     }
 
@@ -114,7 +133,7 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn )
+            if (!isLoggedIn)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -142,13 +161,13 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn )
+            if (!isLoggedIn)
             {
                 return RedirectToAction("Index", "Login");
             }
             else if (userRole.HasValue && userRole.Value == 2)
             {
-                return RedirectToAction("Index", "NotFound"); 
+                return RedirectToAction("Index", "NotFound");
             }
             else
             {
@@ -167,7 +186,7 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn )
+            if (!isLoggedIn)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -205,10 +224,11 @@ namespace OnlineShop.Controllers
         public async Task<ActionResult> Create2(ProductDetail prdetail, string thumbnailName)
         {
             User user = await GetCurrentLoggedInUser();
+            int flag = 0;
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn )
+            if (!isLoggedIn)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -222,20 +242,35 @@ namespace OnlineShop.Controllers
                 {
                     using (PRN211_BL5Context context = new PRN211_BL5Context())
                     {
-                        // Tạo một thumbnail mới
-                        Thumbnail newThumbnail = new Thumbnail
+                        List<Thumbnail> lsthumb = context.Thumbnails.ToList();
+                        foreach (Thumbnail t in lsthumb)
                         {
-                            Thumbnail1 = thumbnailName
-                        };
-                        context.Thumbnails.Add(newThumbnail);
-                        context.SaveChanges();
+                            if (t.Thumbnail1.Equals(thumbnailName))
+                            {
+                                prdetail.ThumbnailId = t.Id;
+                                context.ProductDetails.Add(prdetail);
+                                context.SaveChanges();
+                                flag = 1;
+                                break;
+                            }
+                        }
 
-                        // Gán ThumbnailId cho sản phẩm mới
-                        prdetail.ThumbnailId = newThumbnail.Id;
-                        context.ProductDetails.Add(prdetail);
-                        context.SaveChanges();
+                        if (flag == 0)
+                        {
+                            // Tạo một thumbnail mới
+                            Thumbnail newThumbnail = new Thumbnail
+                            {
+                                Thumbnail1 = thumbnailName
+                            };
+                            context.Thumbnails.Add(newThumbnail);
+                            context.SaveChanges();
+
+                            // Gán ThumbnailId cho sản phẩm mới
+                            prdetail.ThumbnailId = newThumbnail.Id;
+                            context.ProductDetails.Add(prdetail);
+                            context.SaveChanges();
+                        }                      
                     }
-
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -257,7 +292,7 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn )
+            if (!isLoggedIn)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -292,7 +327,7 @@ namespace OnlineShop.Controllers
             bool isLoggedIn = (user != null);
             ViewBag.IsLoggedIn = isLoggedIn;
             int? userRole = user?.Role;
-            if (!isLoggedIn )
+            if (!isLoggedIn)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -317,11 +352,11 @@ namespace OnlineShop.Controllers
                     existingProduct.Image = product.Image;
                     existingProduct.Description = product.Description;
                     existingProduct.Status = product.Status;
-                    context.SaveChanges(); 
+                    context.SaveChanges();
                 }
                 return RedirectToAction("Index", "Manager");
             }
-            
+
         }
 
         public ActionResult Delete(int id)
@@ -348,7 +383,7 @@ namespace OnlineShop.Controllers
                 return View();
             }
         }
-       
+
         public ActionResult Delete2(int id)
         {
             try
@@ -365,7 +400,7 @@ namespace OnlineShop.Controllers
                     context.ProductDetails.Remove(pdetail);
                     context.SaveChanges();
                 }
-                return RedirectToAction("Index" , "Manager" );
+                return RedirectToAction("Index", "Manager");
             }
             catch
             {
