@@ -45,7 +45,7 @@ namespace OnlineShop.Controllers
 
         }
 
-        public async Task<ActionResult> Index2(int id, int? colorId, int? sizeId)
+        public async Task<ActionResult> Index2(int id, string newColor, string newSize)
         {
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
@@ -78,19 +78,19 @@ namespace OnlineShop.Controllers
 
                     var productDetails = product.ProductDetails.AsQueryable();
 
-                    // Apply color filter if colorId is specified
-                    if (colorId.HasValue)
+                    if (!string.IsNullOrEmpty(newColor))
                     {
-                        productDetails = productDetails.Where(pd => pd.ColorId == colorId.Value);
+                        Color colorToAdd = new Color { Name = newColor };
+                        context.Colors.Add(colorToAdd);
+                        await context.SaveChangesAsync();
                     }
 
-                    // Apply size filter if sizeId is specified
-                    if (sizeId.HasValue)
+                    if (!string.IsNullOrEmpty(newSize))
                     {
-                        productDetails = productDetails.Where(pd => pd.SizeId == sizeId.Value);
+                        Size sizeToAdd = new Size { Name = newSize };
+                        context.Sizes.Add(sizeToAdd);
+                        await context.SaveChangesAsync();
                     }
-                    ViewBag.Colors = context.Colors.ToList();
-                    ViewBag.Sizes = context.Sizes.ToList();
 
                     return View(productDetails.ToList());
                 }

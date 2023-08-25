@@ -94,26 +94,14 @@
 
     <form method="get" class="form-inline mb-3">
         <div class="form-group mr-2">
-            <label for="color" class="mr-2">Lọc theo màu:</label>
-            <select id="color" name="colorId" class="form-control">
-                <option value="">All Colors</option>
-                @foreach (var color in ViewData["Colors"] as List<OnlineShop.DataAccess.Color>)
-                {
-                    <option value="@color.Id">@color.Name</option>
-                }
-            </select>
+            <label for="color" class="mr-2">Thêm màu:</label>
+            <input type="text" id="color" name="newColor" class="form-control" placeholder="Màu mới">
         </div>
         <div class="form-group mr-2">
-            <label for="size" class="mr-2">Lọc theo size:</label>
-            <select id="size" name="sizeId" class="form-control">
-                <option value="">All Sizes</option>
-                @foreach (var size in ViewData["Sizes"] as List<OnlineShop.DataAccess.Size>)
-                {
-                    <option value="@size.SizeId">@size.Name</option>
-                }
-            </select>
+            <label for="size" class="mr-2">Thêm size:</label>
+            <input type="text" id="size" name="newSize" class="form-control" placeholder="Size mới">
         </div>
-        <button type="submit" class="btn btn-primary">Apply Filters</button>
+        <button type="submit" class="btn btn-primary">Thêm</button>
     </form>
 
     <p class="text-right">
