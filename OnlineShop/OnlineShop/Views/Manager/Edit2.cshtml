@@ -1,9 +1,12 @@
-﻿@model IEnumerable<OnlineShop.DataAccess.ProductDetail>
+﻿@model OnlineShop.DataAccess.ProductDetail
+
 
 @{
-    ViewData["Title"] = "Product Detail";
+    ViewData["Title"] = "Edit2";
     Layout = null;
 }
+
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,75 +90,57 @@
             }
     </style>
 </head>
-<div class="container">
-    <h1 class="text-center">
-        chi tiết sản phẩm
-    </h1>
 
-    <form method="get" class="form-inline mb-3">
-        <div class="form-group mr-2">
-            <label for="color" class="mr-2">Thêm màu:</label>
-            <input type="text" id="color" name="newColor" class="form-control" placeholder="Màu mới">
-        </div>
-        <div class="form-group mr-2">
-            <label for="size" class="mr-2">Thêm size:</label>
-            <input type="text" id="size" name="newSize" class="form-control" placeholder="Size mới">
-        </div>
-        <button type="submit" class="btn btn-primary">Thêm</button>
-    </form>
+<h1>Sửa</h1>
 
-    <p class="text-right">
-        <a class="btn btn-success" asp-action="Create2">Tạo mới </a>
-    </p>
-
-    <table class="table table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th>Ảnh</th>
-                <th>Số lượng</th>
-                <th>Màu</th>
-                <th>Kích cỡ</th>
-                <th>Thumbnail</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @if (!string.IsNullOrEmpty(item.Image))
-                        {
-                            <img src="@item.Image" alt="Image" class="img-thumbnail" width="100" />
-                        }
-                        else
-                        {
-                            <span>No Image</span>
-                        }
-                    </td>
-                    <td>@item.Quantity</td>
-                    <td>@item.Color.Name</td>
-                    <td>@item.Size.Name</td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(item.Thumbnail?.Thumbnail1))
-                        {
-                            <img src="@item.Thumbnail.Thumbnail1" alt="Thumbnail" class="img-thumbnail" width="100" />
-                        }
-                        else
-                        {
-                            <span>No Thumbnail</span>
-                        }
-                    </td>
-                    <td>
-                        <a class="btn btn-primary" asp-action="Edit2" asp-route-id="@item.ProductDetailId">Edit</a>
-                        <a class="btn btn-danger" asp-controller="Manager" asp-action="Delete2" asp-route-id="@item.ProductDetailId">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <div class="text-center">
-        <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Home</a>
+<h4>ProductDetail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit2">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductDetailId" />
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label"></label>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.Products"></select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ColorId" class="control-label"></label>
+                <select asp-for="ColorId" class="form-control" asp-items="ViewBag.Colors"></select>
+                <span asp-validation-for="ColorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SizeId" class="control-label"></label>
+                <select asp-for="SizeId" class="form-control" asp-items="ViewBag.Sizes"></select>
+                <span asp-validation-for="SizeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            
+            
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

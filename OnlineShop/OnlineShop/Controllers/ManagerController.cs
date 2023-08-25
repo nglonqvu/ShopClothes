@@ -44,8 +44,7 @@ namespace OnlineShop.Controllers
             }
 
         }
-
-        public async Task<ActionResult> Index2(int id, string newColor, string newSize)
+        public async Task<ActionResult> Index2(int id, int? colorId, int? sizeId)
         {
             User user = await GetCurrentLoggedInUser();
             bool isLoggedIn = (user != null);
@@ -78,19 +77,19 @@ namespace OnlineShop.Controllers
 
                     var productDetails = product.ProductDetails.AsQueryable();
 
-                    if (!string.IsNullOrEmpty(newColor))
+                    // Apply color filter if colorId is specified
+                    if (colorId.HasValue)
                     {
-                        Color colorToAdd = new Color { Name = newColor };
-                        context.Colors.Add(colorToAdd);
-                        await context.SaveChangesAsync();
+                        productDetails = productDetails.Where(pd => pd.ColorId == colorId.Value);
                     }
 
-                    if (!string.IsNullOrEmpty(newSize))
+                    // Apply size filter if sizeId is specified
+                    if (sizeId.HasValue)
                     {
-                        Size sizeToAdd = new Size { Name = newSize };
-                        context.Sizes.Add(sizeToAdd);
-                        await context.SaveChangesAsync();
+                        productDetails = productDetails.Where(pd => pd.SizeId == sizeId.Value);
                     }
+                    ViewBag.Colors = context.Colors.ToList();
+                    ViewBag.Sizes = context.Sizes.ToList();
 
                     return View(productDetails.ToList());
                 }
@@ -322,6 +321,83 @@ namespace OnlineShop.Controllers
                 return RedirectToAction("Index", "Manager");
             }
             
+        }
+        [HttpGet]
+        public async Task<ActionResult> Edit2(int id)
+        {
+            User user = await GetCurrentLoggedInUser();
+            bool isLoggedIn = (user != null);
+            ViewBag.IsLoggedIn = isLoggedIn;
+            int? userRole = user?.Role;
+            if (!isLoggedIn)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else if (userRole.HasValue && userRole.Value == 2)
+            {
+                return RedirectToAction("Index", "NotFound");
+            }
+            else
+            {
+                using (PRN211_BL5Context context = new PRN211_BL5Context())
+                {
+                    var product = context.ProductDetails.FirstOrDefault(p => p.ProductDetailId == id);
+                    if (product == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var productname = context.Products.ToList();
+                    ViewBag.Products = new SelectList(productname, "ProductId", "Name");
+
+                    var colorname = context.Colors.ToList();
+                    ViewBag.Colors = new SelectList(colorname, "Id", "Name");
+
+                    var sizename = context.Sizes.ToList();
+                    ViewBag.Sizes = new SelectList(sizename, "SizeId", "Name");
+
+                   
+                    return View(product);
+                }
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit2(int id , ProductDetail product)
+        {
+
+            User user = await GetCurrentLoggedInUser();
+            bool isLoggedIn = (user != null);
+            ViewBag.IsLoggedIn = isLoggedIn;
+            int? userRole = user?.Role;
+            if (!isLoggedIn)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else if (userRole.HasValue && userRole.Value == 2)
+            {
+                return RedirectToAction("Index", "NotFound");
+            }
+            else
+            {
+                using (PRN211_BL5Context context = new PRN211_BL5Context())
+                {
+                    var existingProduct = context.ProductDetails.FirstOrDefault(p => p.ProductDetailId == id);
+
+                    if (existingProduct == null)
+                    {
+                        return NotFound();
+                    }
+                    
+                    existingProduct.ProductId = product.ProductId;
+                    existingProduct.ColorId = product.ColorId;
+                    existingProduct.SizeId=product.SizeId;
+                    existingProduct.Image=product.Image;
+                    existingProduct.Quantity=product.Quantity;
+                    context.SaveChanges();
+                }
+                return RedirectToAction("Index", "Manager");
+            }
         }
 
         public ActionResult Delete(int id)
